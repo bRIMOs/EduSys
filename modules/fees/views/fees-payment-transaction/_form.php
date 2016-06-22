@@ -1,30 +1,3 @@
-<script>
-$(document).ready(function(){
-	var chkvalue = $('#feespaymenttransaction-fees_pay_tran_mode').val();
-	if(chkvalue==1) {
-		$(".cheque-data").hide();
-		$(".cash-data").show();
-	} 
-	else {
-		//$("#cheque-data").css("display","block");
-		$(".cheque-data").show();
-		$(".cash-data").hide();
-	}
-	$("#feespaymenttransaction-fees_pay_tran_mode").change(function(){
-		var chkvalue = $('#feespaymenttransaction-fees_pay_tran_mode').val();
-		if(chkvalue==1) {
-			$(".cheque-data").hide();
-			$(".cash-data").show();
-		} 
-		else {
-			$(".cheque-data").show();
-			$(".cash-data").hide();
-		}
-	});
-});
-
-</script>
-
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -54,9 +27,9 @@ use yii\grid\GridView;
 	<col class="col-sm-2">
   	<col class="col-sm-2">
 	<col class="col-sm-8">
-	<?php 
+	<?php
 	      $imgData = \app\modules\student\models\StuInfo::getStuPhoto($stuData->stuMasterStuInfo->stu_photo);
-	      $displayImg = Html::img($imgData, ['alt'=>'No Image', 'class'=>'img-circle edusec-img-disp']); ?> 
+	      $displayImg = Html::img($imgData, ['alt'=>'No Image', 'class'=>'img-circle edusec-img-disp']); ?>
 	<tr class="visible-xs text-center">
 		<td colspan="2"><?= $displayImg ?></td>
 	</tr>
@@ -107,7 +80,7 @@ $feesDetails = \app\modules\fees\models\FeesCategoryDetails::find()->where(['fee
 	echo '</tr>';
 	foreach($feesDetails as $key=>$value) {
 		echo '<tr>';
-		echo '<td>'.($key+1).'</td>';	
+		echo '<td>'.($key+1).'</td>';
 		echo '<td>'.$value['fees_details_name'].'</td>';
 		echo '<td>'.$value['fees_details_amount'].'</td>';
 		echo '</tr>';
@@ -117,7 +90,7 @@ $feesDetails = \app\modules\fees\models\FeesCategoryDetails::find()->where(['fee
 	echo '<tr><th colspan=2 class="text-right">'.Yii::t('fees', 'Total Paid Fees').'</th><td>'.$totalPay = $model->getStuTotalPayFees($stuData->stu_master_id, $FccModel->fees_collect_category_id).'</th></tr>';
 	echo '<tr class="warning"><th colspan=2 class="text-right">'.Yii::t('fees', 'Total Unpaid Fees').'</th><td>'.($totalAmount-$totalPay).'</td></tr>';
 	echo '</table>';
-?>	
+?>
 <?php
 	$collectOn = true;
 	$printOn = false;
@@ -126,7 +99,7 @@ $feesDetails = \app\modules\fees\models\FeesCategoryDetails::find()->where(['fee
 		echo '<style>.chk-cash { display:none } </style>';
 	}
 	$chkFees = $model->getStuTotalPayFees($stuData->stu_master_id, $FccModel->fees_collect_category_id);
-	if(!empty($chkFees)) 
+	if(!empty($chkFees))
 		$printOn = true;
 ?>
 
@@ -135,7 +108,7 @@ $feesDetails = \app\modules\fees\models\FeesCategoryDetails::find()->where(['fee
 			'errorSummaryCssClass' => 'error-summary text-red',
 			'fieldConfig' => [
 			    'template' => "{label}{input}{error}",
-			]]); 
+			]]);
     ?>
 	<?= $form->errorSummary($model);?>
 
@@ -172,15 +145,15 @@ $feesDetails = \app\modules\fees\models\FeesCategoryDetails::find()->where(['fee
 
 	<div class="col-xs-12 col-sm-12 col-lg-12 no-padding cash-data">
 		<div class="col-xs-12 col-sm-4 col-lg-4">
-			
+
 		</div>
 		<div class="col-xs-12 col-sm-4 col-lg-4">
-			
+
 		</div>
 		<div class="col-xs-12 col-sm-4 col-lg-4">
-			 
+
 		</div>
-	</div>	
+	</div>
 	<!--End payment mode cash--->
 
 	<div class="col-xs-12 col-sm-12 col-lg-12 no-padding cheque-data">
@@ -219,13 +192,13 @@ $feesDetails = \app\modules\fees\models\FeesCategoryDetails::find()->where(['fee
 		<div class="col-xs-12 col-sm-4 col-lg-4"></div>
 		<div class="col-xs-12 col-sm-4 col-lg-4"></div>
 	</div>
-	<!--End cheque related field-->	
- 
+	<!--End cheque related field-->
+
 </div><!---End box-body div---->
 <div class="box-footer">
 	<div class="<?= (Yii::$app->language == 'ar') ? 'pull-left' : 'pull-right'; ?>" style="padding-bottom:10px">
 	<?php if($collectOn) { echo Html::submitButton($model->isNewRecord ? '<i class="fa fa-plus-circle"></i> '.Yii::t('fees', ' Take Fees') : '<i class="fa fa-pencil-square-o"></i> '.Yii::t('fees', 'Update Fees'), ['class' => $model->isNewRecord ? 'btn btn-primary' : 'btn btn-info']); } ?>
-		     
+
 	<?php if($printOn & $model->isNewRecord) { echo Html::a('<i class="fa fa-print"></i> '.Yii::t('fees', 'Print receipt'),['print-common-receipt', 'sid'=>$stuData->stu_master_id, 'fcid'=>$FccModel->fees_collect_category_id], ['class' => 'btn btn-warning', 'target'=>'_blank']); } ?>
 
 	<?php if(!$model->isNewRecord) { echo Html::a(Yii::t('fees', 'Cancel'),['pay-fees', 'sid'=>$stuData->stu_master_id, 'fcid'=>$FccModel->fees_collect_category_id], ['class' => 'btn btn-default']); } ?>
@@ -249,14 +222,14 @@ $dataProvider = new ActiveDataProvider([
 	'query' =>$stuFeesData,
 	'sort' => [
 		'defaultOrder' => [
-			'fees_pay_tran_id' => SORT_DESC, 
+			'fees_pay_tran_id' => SORT_DESC,
 		],
 	],
 	'pagination' => [
 		'pageSize' => 10,
 	],
 ]);
-\yii\widgets\Pjax::begin(['enablePushState'=>FALSE]); 
+\yii\widgets\Pjax::begin(['enablePushState'=>FALSE]);
 echo GridView::widget([
 	'dataProvider' => $dataProvider,
 	'layout' => "{items}\n{pager}",
@@ -285,7 +258,7 @@ echo GridView::widget([
 		],
 		[
 			'attribute'=>'fees_pay_tran_bank_id',
-			'value'=>function($data) { 
+			'value'=>function($data) {
 					return (!empty($data->feesPayTranBank->bank_master_name) ? $data->feesPayTranBank->bank_master_name : "-");
 				}
 		],
@@ -297,7 +270,7 @@ echo GridView::widget([
 		],
 	],
 ]);
-\yii\widgets\Pjax::end(); 
+\yii\widgets\Pjax::end();
 ?>
 </div><!---End Pannel Body Of Student Payment History--->
 </div><!---End Payment History box Block--->
@@ -306,3 +279,29 @@ echo GridView::widget([
 
 <!--/div-->
 </div>
+<script>
+$(document).ready(function(){
+	var chkvalue = $('#feespaymenttransaction-fees_pay_tran_mode').val();
+	if(chkvalue==1) {
+		$(".cheque-data").hide();
+		$(".cash-data").show();
+	}
+	else {
+		//$("#cheque-data").css("display","block");
+		$(".cheque-data").show();
+		$(".cash-data").hide();
+	}
+	$("#feespaymenttransaction-fees_pay_tran_mode").change(function(){
+		var chkvalue = $('#feespaymenttransaction-fees_pay_tran_mode').val();
+		if(chkvalue==1) {
+			$(".cheque-data").hide();
+			$(".cash-data").show();
+		}
+		else {
+			$(".cheque-data").show();
+			$(".cash-data").hide();
+		}
+	});
+});
+
+</script>

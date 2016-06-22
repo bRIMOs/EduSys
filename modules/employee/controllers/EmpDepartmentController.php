@@ -14,16 +14,16 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses. 
+ * along with this program.  If not, see http://www.gnu.org/licenses.
 
- * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics, 
+ * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics,
  * Opp. Thakkarnagar BRTS station, Ahmedbad - 382350, India or
  * at email address info@rudrasoftech.com.
- * 
+ *
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- 
+
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * RUDRA SOFTECH" logo. If the display of the logo is not reasonably feasible for
@@ -98,14 +98,15 @@ class EmpDepartmentController extends Controller
     public function actionCreate()
     {
         $model = new EmpDepartment();
-	$searchModel = new EmpDepartmentSearch();
+        $searchModel = new EmpDepartmentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-	
+
         if($model->load(Yii::$app->request->post()) && !empty($_POST['EmpDepartment'])) {
 		if (Yii::$app->request->isAjax) {
-                        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-                        return ActiveForm::validate($model);
-       		}
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+        
 		$model->attributes = $_POST['EmpDepartment'];
 		$model->created_by = Yii::$app->getid->getId();
 		$model->created_at= new \yii\db\Expression('NOW()');
@@ -116,7 +117,7 @@ class EmpDepartmentController extends Controller
                		 'model' => $model,'searchModel' => $searchModel,
 			    'dataProvider' => $dataProvider,
 			]);
-		
+
             } else {
             return $this->render('index', [
                 'model' => $model,'searchModel' => $searchModel,'dataProvider' => $dataProvider,
@@ -141,7 +142,7 @@ class EmpDepartmentController extends Controller
                         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
                         return ActiveForm::validate($model);
        		}
-		$model->attributes = $_POST['EmpDepartment'];		
+		$model->attributes = $_POST['EmpDepartment'];
 		$model->updated_by = Yii::$app->getid->getId();
 		$model->updated_at= new \yii\db\Expression('NOW()');
 		if($model->save())
@@ -168,9 +169,9 @@ class EmpDepartmentController extends Controller
     {
         $model = EmpDepartment::findOne($id);
         $model->is_status = 2;
-	$model->updated_by = Yii::$app->getid->getId();
-	$model->updated_at = new \yii\db\Expression('NOW()');
-	$model->update();
+        $model->updated_by = Yii::$app->getid->getId();
+        $model->updated_at = new \yii\db\Expression('NOW()');
+        $model->update();
 
         return $this->redirect(['index']);
     }

@@ -74,7 +74,7 @@ class BatchesSearch extends Batches
      */
     public function search($params)
     {
-        $query = Batches::find()->where('is_status != 2');
+        $query = Batches::find()->where(['<>', 'is_status', 2]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query, 'sort'=> ['defaultOrder' => ['batch_id'=>SORT_DESC]],

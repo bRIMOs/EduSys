@@ -3,9 +3,9 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 ?>
 <div class="bank-master-index">
-    <?php  
+    <?php
 	$org = app\models\Organization::find()->asArray()->one();
-	$model->sort = false; 
+	$model->sort = false;
 	$dispColumn = false;
 	if($type == 'Excel') {
 		$dispColumn = true;
@@ -15,7 +15,7 @@ use yii\grid\GridView;
     ?>
     <?= GridView::widget([
         'dataProvider' => $model,
-	'layout' => '{items}',
+        'layout' => '{items}',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 

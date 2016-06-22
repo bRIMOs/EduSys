@@ -14,16 +14,16 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses. 
+ * along with this program.  If not, see http://www.gnu.org/licenses.
 
- * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics, 
+ * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics,
  * Opp. Thakkarnagar BRTS station, Ahmedbad - 382350, India or
  * at email address info@rudrasoftech.com.
- * 
+ *
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- 
+
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * RUDRA SOFTECH" logo. If the display of the logo is not reasonably feasible for
@@ -82,10 +82,10 @@ class EmpMaster extends \yii\db\ActiveRecord
         return 'emp_master';
     }
 
-   
+
     public static function find()
     {
-	return parent::find()->andWhere(['<>', 'emp_master.is_status', 2]);
+        return parent::find()->andWhere(['<>', 'emp_master.is_status', 2]);
     }
 
     /**
@@ -94,7 +94,7 @@ class EmpMaster extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-	    [['emp_master_emp_info_id','emp_master_department_id', 'emp_master_category_id','emp_master_emp_address_id'], 'required', 'message'=>''],
+            [['emp_master_emp_info_id','emp_master_department_id', 'emp_master_category_id','emp_master_emp_address_id'], 'required', 'message'=>''],
             [['emp_master_emp_info_id', 'emp_master_user_id', 'emp_master_department_id', 'emp_master_designation_id', 'emp_master_category_id', 'emp_master_nationality_id', 'emp_master_emp_address_id', 'emp_master_status_id', 'created_by', 'updated_by', 'is_status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['emp_master_emp_info_id'], 'unique'],

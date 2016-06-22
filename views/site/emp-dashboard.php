@@ -1,8 +1,8 @@
-<?php 
+<?php
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->title = Yii::t('app', 'Employee Dashboard'); 
+$this->title = Yii::t('app', 'Employee Dashboard');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <script>
@@ -25,7 +25,7 @@ $(document).ready(function(){
 
 <style>
 img {
-    vertical-align: inherit !important;   
+    vertical-align: inherit !important;
 }
 .tab-content {
    padding:15px;
@@ -34,7 +34,7 @@ img {
     background: none;
 }
 .popover{
-    max-width:450px;   
+    max-width:450px;
 }
 </style>
 
@@ -62,17 +62,17 @@ $this->registerJs(
             <section class="content">
 	<?php  $msg = app\modules\dashboard\models\MsgOfDay::find()->andWhere(['is_status' => 0,'msg_user_type'=> ['0','E' ]])->one(); ?>
 <?php		if(!empty($msg))
-		{ ?>				
+		{ ?>
 		<div class="callout callout-info show msg-of-day" >
 		    <h4><i class="fa fa-bullhorn"></i> <?php echo Yii::t('app', 'Message of day box') ?></h4>
 		    <marquee onmouseout="this.setAttribute('scrollamount', 6, 0);" onmouseover="this.setAttribute('scrollamount', 0, 0);" scrollamount="6" behavior="scroll" direction="left"><?php echo $msg->msg_details; ?></marquee>
-		    
+
 		</div>
 		<?php } else {   ?>
 		<div class="callout callout-info hide msg-of-day" >
 		    <h4><?php echo Yii::t('app', 'Message of day box') ?></h4>
 		   	<marquee behavior="scroll" direction="left"></marquee>
-		   
+
 		</div>
 		<?php } ?>
        <?php $empSession = Yii::$app->session->get('emp_id'); ?>
@@ -102,17 +102,17 @@ $this->registerJs(
 			</tr>
 			<tr>
 				<th><?php echo Yii::t('app', 'Department') ?></th>
-				<td><?= $EmpMaster->empMasterDepartment->emp_department_name ?></td>	
+				<td><?= $EmpMaster->empMasterDepartment->emp_department_name ?></td>
 			</tr>
 			<tr>
 				<th><?php echo Yii::t('app', 'Designation') ?></th>
-				<td><?= (!empty($EmpMaster->empMasterDesignation->emp_designation_name) ? $EmpMaster->empMasterDesignation->emp_designation_name :"") ?></td>			
+				<td><?= (!empty($EmpMaster->empMasterDesignation->emp_designation_name) ? $EmpMaster->empMasterDesignation->emp_designation_name :"") ?></td>
 			</tr>
-			
+
 			<tr>
 				<th><?= Html::activeLabel($EmpInfo, 'emp_mobile_no') ?></th>
 				<td><?= (!empty($info->emp_mobile_no) ? $info->emp_mobile_no : "" )?></td>
-			</tr>	
+			</tr>
 			<tr>
 				<th><?= Html::activeLabel($EmpInfo, 'emp_email_id') ?></th>
 				<td><?= (!empty($EmpInfo->emp_email_id) ? $EmpInfo->emp_email_id : "") ?></td>
@@ -134,7 +134,7 @@ $this->registerJs(
 	      </div>
 	     </div><!---/. box--->
 	    </div><!---/. col-sm-4-->
-	   
+
 	    <div class="col-sm-8 col-xs-12">
 		<div class="box box-info">
 		   <div class="box-header with-border">
@@ -150,7 +150,7 @@ $this->registerJs(
 					<th class="<?= (Yii::$app->language == 'ar') ? 'text-right' : ''; ?>"><?php echo Yii::t('app', 'Date') ?></th>
 					<th class="<?= (Yii::$app->language == 'ar') ? 'text-right' : ''; ?>"><?php echo Yii::t('app', 'Holiday') ?></th>
 				</tr>
-				<?php foreach($holidayData as $v) : ?>	
+				<?php foreach($holidayData as $v) : ?>
 				<tr>
 					<td><?= Yii::$app->formatter->asDate($v['national_holiday_date']) ?></td>
 					<td><?= $v['national_holiday_name']?></td>
@@ -165,9 +165,9 @@ $this->registerJs(
 			</div>
 			<?php endif; ?>
 		     </div><!---/. end-responsive-div--->
-		   </div><!---/. box-body---> 	
-		</div><!---/. box---> 	
-	</div>	
+		   </div><!---/. box-body--->
+		</div><!---/. box--->
+	</div>
 </div>
 <!---end first row block for employee info and holiday list--->
 
@@ -187,20 +187,20 @@ $this->registerJs(
                 <div class="tab-content">
                     <!-- Notice -->
                     <div class="tab-pane active" id="all-notice">
-			
-			<?php $noticeList = app\modules\dashboard\models\Notice::find()->where("is_status = 0 AND notice_user_type = '0'")->all();
+
+			<?php $noticeList = app\modules\dashboard\models\Notice::find()->where(["is_status" => 0 , 'notice_user_type' => 0])->all();
 
 		    if(!empty($noticeList)) {
 			foreach($noticeList as $nl) : ?>
 			 <div class="notice-main bg-light-blue">
-				<div class="notice-disp-date">				        		<small class="label label-success"><i class="fa fa-calendar"></i> <?= (!empty($nl->notice_date) ? Yii::$app->formatter->asDate($nl->notice_date) : "Not Set"); ?></small>	
+				<div class="notice-disp-date">				        		<small class="label label-success"><i class="fa fa-calendar"></i> <?= (!empty($nl->notice_date) ? Yii::$app->formatter->asDate($nl->notice_date) : "Not Set"); ?></small>
 				</div>
 				<div class="notice-body">
 					 <div class="notice-title"><?= Html::a($nl->notice_title, '#', ['style' => 'color:#FFF', 'class'=>'noticeModalLink', 'data-value'=>Url::to(['dashboard/notice/view-popup','id'=>$nl->notice_id])]); ?>&nbsp; </div>
 					 <div class="notice-desc"><?= $nl->notice_description; ?> </div>
-				</div>					          
+				</div>
 			</div>
-			<?php endforeach; 
+			<?php endforeach;
 		     } else {
 				echo '<div class="box-header bg-warning"><div style="padding:5px">';
 				echo Yii::t('app', 'No Notice....');
@@ -209,19 +209,19 @@ $this->registerJs(
 			?>
 		    </div>
 		    <div class="tab-pane" id="emp-notice">
-			
-			<?php $noticeList = app\modules\dashboard\models\Notice::find()->where("is_status = 0 AND notice_user_type = 'E'")->all();
+
+			<?php $noticeList = app\modules\dashboard\models\Notice::find()->where(["is_status" => 0, 'notice_user_type' => 'E'])->all();
 
 		    if(!empty($noticeList)) {
 			foreach($noticeList as $nl) :
 			?>
 			    <div class="notice-main bg-teal">
-			        <div class="notice-disp-date">				        		<small class="label label-success"><i class="fa fa-calendar"></i> <?= (!empty($nl->notice_date) ? Yii::$app->formatter->asDate($nl->notice_date) : "Not Set"); ?></small>	
+			        <div class="notice-disp-date">				        		<small class="label label-success"><i class="fa fa-calendar"></i> <?= (!empty($nl->notice_date) ? Yii::$app->formatter->asDate($nl->notice_date) : "Not Set"); ?></small>
 				</div>
 				<div class="notice-body">
 					 <div class="notice-title"><?= Html::a($nl->notice_title, '#', ['style' => 'color:#FFF', 'class'=>'noticeModalLink', 'data-value'=>Url::to(['dashboard/notice/view-popup','id'=>$nl->notice_id])]); ?> &nbsp; </div>
 					 <div class="notice-desc"><?= $nl->notice_description; ?> </div>
-				</div>	
+				</div>
 			    </div><!-- /.box -->
 			<?php endforeach;
 		      } else {
@@ -285,7 +285,7 @@ EOF;
 					'eventClick' => new \yii\web\JsExpression($JSEventClick),
 					'eventRender' => new \yii\web\JsExpression($JsF),
 					'contentHeight' => 380,
-					'timeFormat' => 'hh(:mm) A', 
+					'timeFormat' => 'hh(:mm) A',
 				],
 				'ajaxEvents' => yii\helpers\Url::toRoute(['/dashboard/events/view-events'])
 			]);
@@ -328,7 +328,7 @@ EOF;
 					<small class="label label-success"><i class="fa fa-calendar"></i> <?php echo date('d M',strtotime($el->emp_dob)); ?></small></h3>
 					</div>
 				    </div><!-- /.box -->
-				<?php endforeach; 
+				<?php endforeach;
 			} else {
 				echo '<div class="box-header bg-warning"><div style="padding:5px">';
 				echo Yii::t('app', 'No Birthday Today');
@@ -338,7 +338,7 @@ EOF;
 		    </div>
                     <div class="tab-pane" id="birth-upcoming">
 			<?php $empLi = "SELECT * FROM  emp_info WHERE  DATE_ADD(emp_dob, INTERVAL YEAR(CURDATE())-YEAR(emp_dob) + IF(DAYOFYEAR(CURDATE()) > DAYOFYEAR(emp_dob),1,0) YEAR) BETWEEN CURDATE()+1 AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)";
-			$empList = app\modules\employee\models\EmpInfo::findBySql($empLi)->all(); 
+			$empList = app\modules\employee\models\EmpInfo::findBySql($empLi)->all();
 			if(!empty($empList)) {
 				foreach($empList as $el) :
 				?>
@@ -351,7 +351,7 @@ EOF;
 					    <small class="label label-warning"><i class="fa fa-calendar"></i> <?php echo date('d M',strtotime($el->emp_dob)); ?></small></h3>
 					</div>
 				    </div><!-- /.box -->
-				<?php endforeach; 
+				<?php endforeach;
 			} else {
 				echo '<div class="box-header bg-warning"><div style="padding:5px">';
 				echo Yii::t('app', 'No Birthday within 30 days duration');
@@ -369,8 +369,8 @@ EOF;
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <ul class="todo-list" id="coursList">
-		     <?php 
-			$courseList = app\modules\course\models\Courses::find()->where(['is_status' => 0])->all(); 
+		     <?php
+			$courseList = app\modules\course\models\Courses::find()->where(['is_status' => 0])->all();
 
 			foreach($courseList as $cl) :
 		     ?>

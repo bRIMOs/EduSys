@@ -14,16 +14,16 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses. 
+ * along with this program.  If not, see http://www.gnu.org/licenses.
 
- * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics, 
+ * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics,
  * Opp. Thakkarnagar BRTS station, Ahmedbad - 382350, India or
  * at email address info@rudrasoftech.com.
- * 
+ *
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- 
+
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * RUDRA SOFTECH" logo. If the display of the logo is not reasonably feasible for
@@ -58,28 +58,37 @@ class DefaultController extends Controller
 	/**
 	* @Start Display Category Wise Student Details Graph
 	*/
-	$stuCateDataTmp = StuCategory::find()->where(['is_status'=>0])->asArray()->all();	
+	$stuCateDataTmp = StuCategory::find()->where(['is_status'=>0])->asArray()->all();
 	foreach($stuCateDataTmp as $cv) {
 		$stuCatWiseDisp[] = $cv['stu_category_name'];
-		$maleCount = (new \yii\db\Query())->from('stu_master sm')
+		$maleCount = (new \yii\db\Query())
+            ->from('stu_master sm')
 		    ->join('JOIN', 'stu_info si', 'si.stu_info_stu_master_id = sm.stu_master_id')
-		    ->where(['sm.is_status' => '0', 'si.stu_gender'=>'Male',  'sm.stu_master_category_id'=>$cv['stu_category_id']])->count();
+		    ->where(['sm.is_status' => '0', 'si.stu_gender'=>'Male',  'sm.stu_master_category_id' => $cv['stu_category_id']])
+            ->count();
 
-		$femaleCount = (new \yii\db\Query())->from('stu_master sm')
+		$femaleCount = (new \yii\db\Query())
+            ->from('stu_master sm')
 		    ->join('JOIN', 'stu_info si', 'si.stu_info_stu_master_id = sm.stu_master_id')
-		    ->where(['sm.is_status' => '0', 'si.stu_gender'=>'Female',  'sm.stu_master_category_id'=>$cv['stu_category_id']])->count();	
-	
+		    ->where(['sm.is_status' => '0', 'si.stu_gender'=>'Female',  'sm.stu_master_category_id'=> $cv['stu_category_id']])
+            ->count();
+
 		$stuCatWiseDataMale[] = $maleCount;
 		$stuCatWiseDataFemale[] = $femaleCount;
 	}
 	$stuCatWiseDisp[] = 'Not Set';
-	$stuCatWiseDataMale[] = (new \yii\db\Query())->from('stu_master sm')
+	$stuCatWiseDataMale[] = (new \yii\db\Query())
+            ->from('stu_master sm')
 			->join('JOIN', 'stu_info si', 'si.stu_info_stu_master_id = sm.stu_master_id')
-			->where(['sm.is_status'=>0, 'sm.stu_master_category_id'=>NULL, 'si.stu_gender'=>'Male'])->count();
-	$stuCatWiseDataFemale[] = (new \yii\db\Query())->from('stu_master sm')
+			->where(['sm.is_status'=>0, 'sm.stu_master_category_id'=>NULL, 'si.stu_gender'=>'Male'])
+            ->count();
+
+	$stuCatWiseDataFemale[] = (new \yii\db\Query())
+            ->from('stu_master sm')
 			->join('JOIN', 'stu_info si', 'si.stu_info_stu_master_id = sm.stu_master_id')
-			->where(['sm.is_status'=>0, 'sm.stu_master_category_id'=>NULL, 'si.stu_gender'=>'Female'])->count();
-	
+			->where(['sm.is_status'=>0, 'sm.stu_master_category_id'=>NULL, 'si.stu_gender'=>'Female'])
+            ->count();
+
 
     /**
 	 * @Start Display Student Status Wise Details in combine graph
@@ -96,40 +105,40 @@ class DefaultController extends Controller
 		$dataRegTmp[] = $stuCourseRegStat;
 		$courseData[] = $v['course_name'];
 	}
-	$stuStatusData[] = ['name'=>"Default ($stuRegStat)", 
+	$stuStatusData[] = ['name'=>"Default ($stuRegStat)",
 			  'type'=>'column',
 			  'data'=>$dataRegTmp,
 			  'color'=>'#77C730',
 			];
 	//print_r($stuStatusData); exit;
 
-	foreach($stuStatusDataTmp as $k=>$sv) 
+	foreach($stuStatusDataTmp as $k=>$sv)
 	{
 		$dataTmp = [];
 		foreach($courseDataTmp as $v) {
 			$stuCourseStat = StuMaster::find()->where(['is_status'=>0, 'stu_master_course_id'=>$v['course_id'], 'stu_master_stu_status_id'=>$sv['stu_status_id']])->count();
-			
+
 			$dataTmp[] = $stuCourseStat;
 		}
 
 		$stuStatusWiseCount = StuMaster::find()->where(['is_status'=>0, 'stu_master_stu_status_id'=>$sv['stu_status_id']])->count();
-		$stuStatusData[] = ['name'=>$sv['stu_status_name']."($stuStatusWiseCount)", 
+		$stuStatusData[] = ['name'=>$sv['stu_status_name']."($stuStatusWiseCount)",
 				       'type'=>'column',
 				       'data'=>$dataTmp,
-					
+
 				 ];
 		$stuStatusWise[] = ['name'=>$sv['stu_status_name'].' ('.$stuStatusWiseCount.')',
 				    'y'=>$stuStatusWiseCount,
 				    'color'=>new JsExpression('Highcharts.getOptions().colors['.($k).']')
 				];
-		
+
 	}
 
 	/**
 	* @Start Gender Wise Data Display For Student
 	*/
 	$stuGenWise = (new \yii\db\Query())
-		    ->select(["CONCAT(IFNULL(si.stu_gender, 'Not Set'), ' (', COUNT( stu_master_id ), ')') AS '0'", 'COUNT(stu_master_id) AS "1"']) 
+		    ->select(["CONCAT(IFNULL(si.stu_gender, 'Not Set'), ' (', COUNT( stu_master_id ), ')') AS '0'", 'COUNT(stu_master_id) AS "1"'])
 		    ->from('stu_master sm')
 		    ->join('JOIN', 'stu_info si', 'si.stu_info_stu_master_id = sm.stu_master_id')
 		    ->where(['sm.is_status' => '0'])
@@ -144,7 +153,7 @@ class DefaultController extends Controller
 	* @Start Gender Wise Data Display For Employee
 	*/
 	$empGenWise = (new \yii\db\Query())
-		    ->select(["CONCAT(IFNULL(ei.emp_gender, 'Not Set'), ' (', COUNT( emp_master_id ), ')') AS '0'", 'COUNT(emp_master_id) AS "1"']) 
+		    ->select(["CONCAT(IFNULL(ei.emp_gender, 'Not Set'), ' (', COUNT( emp_master_id ), ')') AS '0'", 'COUNT(emp_master_id) AS "1"'])
 		    ->from('emp_master em')
 		    ->join('JOIN', 'emp_info ei', 'ei.emp_info_emp_master_id = em.emp_master_id')
 		    ->where(['em.is_status' => '0'])
@@ -160,7 +169,7 @@ class DefaultController extends Controller
 	*/
 	$empYearWiseJoin = $depDisp = [];
 	$empYearJoin = (new \yii\db\Query())
-		    ->select(["CONCAT(DATE_FORMAT(ei.emp_joining_date, '%Y'), ' (', COUNT(em.emp_master_id), ')') AS 'yearDisp'", 'DATE_FORMAT(ei.emp_joining_date, "%Y") as "year"']) 
+		    ->select(["CONCAT(DATE_FORMAT(ei.emp_joining_date, '%Y'), ' (', COUNT(em.emp_master_id), ')') AS 'yearDisp'", 'DATE_FORMAT(ei.emp_joining_date, "%Y") as "year"'])
 		    ->from('emp_master em')
 		    ->join('JOIN', 'emp_info ei', 'ei.emp_info_emp_master_id = em.emp_master_id')
 		    ->where(['em.is_status' => '0'])
@@ -180,7 +189,7 @@ class DefaultController extends Controller
 		    $depDisp[] = $dv['emp_department_alias'];
 		}
 		$yearResults = ['name'=>!empty($v['yearDisp']) ? $v['yearDisp'] : "Not Set", 'data'=>$deptCount];
-		$empYearWiseJoin[] = $yearResults;	
+		$empYearWiseJoin[] = $yearResults;
 	}
         return $this->render('index', ['stuCatWiseDataMale'=>$stuCatWiseDataMale,
 				       'stuCatWiseDataFemale'=>$stuCatWiseDataFemale,
@@ -195,8 +204,7 @@ class DefaultController extends Controller
 				]
 			);
     }
-    
 
-   
+
+
 }
-

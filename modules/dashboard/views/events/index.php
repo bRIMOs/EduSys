@@ -12,38 +12,11 @@ $this->title = Yii::t('dash', 'Manage Events');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('dash', 'Dashboard'), 'url' => ['default/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<style>
-.fc-content {
-    font-size: 13px;
-    font-weight: bold;
-    padding: 2px;
-}
 
-.closon {
-    position: absolute;
-    top: -2px;
-    right: 0;
-    cursor: pointer;
-    background-color: #FFF
-}
-.popover{
-    max-width:450px;   
-}
-</style>
-<?php
-	yii\bootstrap\Modal::begin([
-		'id' => 'eventModal',
-		//'header' => "<div class='row'><div class='col-xs-6'><h3>Add Event</h3></div><div class='col-xs-6'>".Html::a('Delete', ['#'], ['class' => 'btn btn-danger pull-right', 'style' => 'margin-top:5px'])."</div></div>",
-		'header' => "<h3>".Yii::t('dash', 'Add Event')."</h3>",
-	]);
-
-	yii\bootstrap\Modal::end(); 
-?>
-  
 <section class="content-header">
 <div class="row">
   <div class="col-xs-12">
-	<h2 class="page-header">	
+	<h2 class="page-header">
 		<?php echo Yii::t('dash', 'Manage Events') ?>
 	</h2>
   </div><!-- /.col -->
@@ -52,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-<?php if(\Yii::$app->session->hasFlash('maxEvent')) 
+<?php if(\Yii::$app->session->hasFlash('maxEvent'))
       {
 ?>
 <div class="col-xs-12 no-padding">
@@ -72,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
   </div><!-- /.box-header -->
   <div class="box-body">
    <div class="events-index">
-    <?php 
+    <?php
 	$AEurl = Url::to(["events/add-event"]);
 	$UEurl = Url::to(["events/update-event"]);
 	$AddEvent = Yii::t('dash', 'Add Event');
@@ -169,3 +142,31 @@ EOF;
   </div>
 </div>
 </section>
+<style>
+.fc-content {
+    font-size: 13px;
+    font-weight: bold;
+    padding: 2px;
+}
+
+.closon {
+    position: absolute;
+    top: -2px;
+    right: 0;
+    cursor: pointer;
+    background-color: #FFF
+}
+.popover{
+    max-width:450px;
+}
+</style>
+<?php
+	yii\bootstrap\Modal::begin([
+		'id' => 'eventModal',
+		//'header' => "<div class='row'><div class='col-xs-6'><h3>Add Event</h3></div><div class='col-xs-6'>".Html::a('Delete', ['#'], ['class' => 'btn btn-danger pull-right', 'style' => 'margin-top:5px'])."</div></div>",
+		'header' => "<h3>".Yii::t('dash', 'Add Event')."</h3>",
+	]);
+
+	yii\bootstrap\Modal::end();
+?>
+  

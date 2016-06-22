@@ -4,9 +4,9 @@ use yii\bootstrap\ActiveForm;
 use yii\grid\GridView;
 ?>
 <div class="emp-department-index">
-    <?php  
+    <?php
 	$org = app\models\Organization::find()->asArray()->one();
-	$model->sort = false; 
+	$model->sort = false;
 
 	if($type == 'Excel') {
 		echo "<meta http-equiv=\"Content-type\" content=\"text/html;charset=utf-8\" />";
@@ -15,7 +15,7 @@ use yii\grid\GridView;
     ?>
     <?= GridView::widget([
         'dataProvider' => $model,
-	'layout' => '{items}',
+        'layout' => '{items}',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 

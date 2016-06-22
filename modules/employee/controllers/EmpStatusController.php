@@ -14,16 +14,16 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses. 
+ * along with this program.  If not, see http://www.gnu.org/licenses.
 
- * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics, 
+ * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics,
  * Opp. Thakkarnagar BRTS station, Ahmedbad - 382350, India or
  * at email address info@rudrasoftech.com.
- * 
+ *
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- 
+
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * RUDRA SOFTECH" logo. If the display of the logo is not reasonably feasible for
@@ -69,10 +69,12 @@ class EmpStatusController extends Controller
     {
         $searchModel = new EmpStatusSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-	$model = new EmpStatus();
-	      return $this->render('index', [
+        $model = new EmpStatus();
+
+        return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider, 'model' => $model
+            'dataProvider' => $dataProvider,
+            'model' => $model
         ]);
     }
 
@@ -96,20 +98,20 @@ class EmpStatusController extends Controller
     public function actionCreate()
     {
         $model = new EmpStatus();
-	$searchModel = new EmpStatusSearch();
+        $searchModel = new EmpStatusSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         if ($model->load(Yii::$app->request->post())) {
-		if (Yii::$app->request->isAjax) {
-                        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-                        return ActiveForm::validate($model);
-       		}
-		$model->attributes = $_POST['EmpStatus'];
-		$model->created_by = Yii::$app->getid->getId();
-		$model->created_at= new \yii\db\Expression('NOW()');
-		if($model->save())
-			return $this->redirect(['index',['model' => $model,'searchModel'=>$searchModel,'dataProvider'=> $dataProvider] ]);
-            } else {
+            if (Yii::$app->request->isAjax) {
+                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+            }
+            $model->attributes = $_POST['EmpStatus'];
+            $model->created_by = Yii::$app->getid->getId();
+            $model->created_at= new \yii\db\Expression('NOW()');
+            if($model->save())
+                return $this->redirect(['index',['model' => $model,'searchModel'=>$searchModel,'dataProvider'=> $dataProvider] ]);
+        } else {
             return $this->render('index', [
                 'model' => $model,'searchModel'=>$searchModel,'dataProvider'=> $dataProvider
             ]);
@@ -128,14 +130,14 @@ class EmpStatusController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 		if (Yii::$app->request->isAjax) {
-                        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-                        return ActiveForm::validate($model);
-       		}
-		$model->attributes = $_POST['EmpStatus'];		
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+   		}
+		$model->attributes = $_POST['EmpStatus'];
 		$model->updated_by = Yii::$app->getid->getId();
 		$model->updated_at= new \yii\db\Expression('NOW()');
 		if($model->save())
-	            return $this->redirect(['view', 'id' => $model->emp_status_id]);
+            return $this->redirect(['view', 'id' => $model->emp_status_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -153,9 +155,9 @@ class EmpStatusController extends Controller
     {
         $model = EmpStatus::findOne($id);
         $model->is_status = 2;
-	$model->updated_by = Yii::$app->getid->getId();
-	$model->updated_at = new \yii\db\Expression('NOW()');
-	$model->update();
+        $model->updated_by = Yii::$app->getid->getId();
+        $model->updated_at = new \yii\db\Expression('NOW()');
+        $model->update();
 
         return $this->redirect(['index']);
     }

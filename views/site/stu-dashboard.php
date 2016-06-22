@@ -1,9 +1,9 @@
-<?php 
+<?php
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 
-$this->title = Yii::t('app', 'Student Dashboard'); 
+$this->title = Yii::t('app', 'Student Dashboard');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <script>
@@ -37,7 +37,7 @@ $(document).ready(function(){
     font-size:15px !important;
 }
 .popover{
-    max-width:450px;   
+    max-width:450px;
 }
 </style>
 
@@ -151,7 +151,7 @@ $stuInfo = app\modules\student\models\StuInfo::findOne($stuMaster->stu_master_st
 			    <div class="icon">
 				<i class="fa fa-inr" style="font-size:55px"></i>
 			    </div>
-			</div><!---/. small-box-1---> 
+			</div><!---/. small-box-1--->
 			<div class="small-box bg-yellow">
 			   <div class="inner">
 				<h3>&#8377; <?= ($currentFeesData['paidFees']) ? $currentFeesData['paidFees'] : 0 ?></h3>
@@ -160,7 +160,7 @@ $stuInfo = app\modules\student\models\StuInfo::findOne($stuMaster->stu_master_st
 			    <div class="icon">
 				<i class="fa fa-inr" style="font-size:65px"></i>
 			    </div>
-			</div><!---/. small-box-2---> 	
+			</div><!---/. small-box-2--->
 			<div class="small-box bg-red">
 			   <div class="inner">
 				<h3>&#8377; <?= ($currentFeesData['unPaidFees']) ? $currentFeesData['unPaidFees'] : 0 ?></h3>
@@ -169,12 +169,12 @@ $stuInfo = app\modules\student\models\StuInfo::findOne($stuMaster->stu_master_st
 			    <div class="icon">
 				<i class="fa fa-inr" style="font-size:65px"></i>
 			    </div>
-			</div><!---/. small-box-3---> 	
-		   </div><!---/. box-body---> 	
+			</div><!---/. small-box-3--->
+		   </div><!---/. box-body--->
 		   <div class="box-footer text-center">
 			 <?= Html::a(Yii::t('app', 'More Info'), ['/fees/fees-payment-transaction/stu-fees-data'], ['class' => 'small-box-footer', 'style' => 'font-size:13px', 'target' => '_blank']) ?>
 		   </div>
-		</div><!---/. box--->	
+		</div><!---/. box--->
 	    </div> <!---/.col-sm-3---->
 	    <div class="col-sm-5 col-xs-12">
 		<div class="box box-info">
@@ -191,7 +191,7 @@ $stuInfo = app\modules\student\models\StuInfo::findOne($stuMaster->stu_master_st
 					<th class="<?= (Yii::$app->language == 'ar') ? 'text-right' : ''; ?>"><?php echo Yii::t('app', 'Date') ?></th>
 					<th class="<?= (Yii::$app->language == 'ar') ? 'text-right' : ''; ?>"><?php echo Yii::t('app', 'Holiday') ?></th>
 				</tr>
-				<?php foreach($holidayData as $v) : ?>	
+				<?php foreach($holidayData as $v) : ?>
 				<tr>
 					<td><?= Yii::$app->formatter->asDate($v['national_holiday_date']) ?></td>
 					<td><?= $v['national_holiday_name']?></td>
@@ -206,13 +206,13 @@ $stuInfo = app\modules\student\models\StuInfo::findOne($stuMaster->stu_master_st
 			</div>
 			<?php endif; ?>
 		     </div><!---/. end-responsive-div--->
-		   </div><!---/. box-body---> 	
-		</div><!---/. box---> 	
-	    </div><!---/. col-div---> 	
+		   </div><!---/. box-body--->
+		</div><!---/. box--->
+	    </div><!---/. col-div--->
 	</div><!---/. row--->
     <!-- End First Row Block -->
 
-          
+
     <!-- Start second row block -->
     <div class="row">
         <!-- Left col -->
@@ -228,21 +228,21 @@ $stuInfo = app\modules\student\models\StuInfo::findOne($stuMaster->stu_master_st
                 <div class="tab-content">
                     <!-- Notice -->
                     <div class="tab-pane" id="all-notice">
-			
+
 			<?php $noticeList = app\modules\dashboard\models\Notice::find()->where("is_status = 0 AND notice_user_type = '0'")->all();
 
 		    if(!empty($noticeList)) {
 			foreach($noticeList as $nl) : ?>
 			 <div class="notice-main bg-light-blue">
-				<div class="notice-disp-date">				       
-					<small class="label label-success"><i class="fa fa-calendar"></i> <?= (!empty($nl->notice_date) ? Yii::$app->formatter->asDate($nl->notice_date) : Yii::t('app', "Not Set")); ?></small>	
+				<div class="notice-disp-date">
+					<small class="label label-success"><i class="fa fa-calendar"></i> <?= (!empty($nl->notice_date) ? Yii::$app->formatter->asDate($nl->notice_date) : Yii::t('app', "Not Set")); ?></small>
 				</div>
 				<div class="notice-body">
 					 <div class="notice-title"><?= Html::a($nl->notice_title, '#', ['style' => 'color:#FFF', 'class'=>'noticeModalLink', 'data-value'=>Url::to(['dashboard/notice/view-popup','id'=>$nl->notice_id])]); ?>&nbsp; </div>
 					 <div class="notice-desc"><?= $nl->notice_description; ?> </div>
-				</div>					          
+				</div>
 			</div>
-			<?php endforeach; 
+			<?php endforeach;
 		     } else {
 				echo '<div class="box-header bg-warning"><div style="padding:5px">';
 				echo Yii::t('app', 'No Notice....');
@@ -251,18 +251,18 @@ $stuInfo = app\modules\student\models\StuInfo::findOne($stuMaster->stu_master_st
 			?>
 		    </div>
                     <div class="tab-pane active" id="stu-notice">
-			
+
 			<?php $noticeList = app\modules\dashboard\models\Notice::find()->where("is_status = 0 AND notice_user_type = 'S'")->all();
 
 		    if(!empty($noticeList)) {
 			foreach($noticeList as $nl) : ?>
 			<div class="notice-main bg-aqua">
-				<div class="notice-disp-date">				        		<small class="label label-success"><i class="fa fa-calendar"></i> <?= (!empty($nl->notice_date) ? Yii::$app->formatter->asDate($nl->notice_date) : "Not Set"); ?></small>	
+				<div class="notice-disp-date">				        		<small class="label label-success"><i class="fa fa-calendar"></i> <?= (!empty($nl->notice_date) ? Yii::$app->formatter->asDate($nl->notice_date) : "Not Set"); ?></small>
 				</div>
 				<div class="notice-body">
 					 <div class="notice-title"><?= Html::a($nl->notice_title, '#', ['style' => 'color:#FFF', 'class'=>'noticeModalLink', 'data-value'=>Url::to(['dashboard/notice/view-popup','id'=>$nl->notice_id])]); ?>&nbsp; </div>
 					 <div class="notice-desc"><?= $nl->notice_description; ?> </div>
-				</div>					          
+				</div>
 			</div>
 			<?php endforeach;
 		      } else {
@@ -326,7 +326,7 @@ EOF;
 					'eventClick' => new \yii\web\JsExpression($JSEventClick),
 					'eventRender' => new \yii\web\JsExpression($JsF),
 					'contentHeight' => 380,
-					'timeFormat' => 'hh(:mm) A', 
+					'timeFormat' => 'hh(:mm) A',
 				],
 				'ajaxEvents' => yii\helpers\Url::toRoute(['/dashboard/events/view-events'])
 			]);
@@ -369,7 +369,7 @@ EOF;
 					<small class="label label-success"><i class="fa fa-calendar"></i> <?php echo date('d M',strtotime($el->emp_dob)); ?></small></h3>
 					</div>
 				    </div><!-- /.box -->
-				<?php endforeach; 
+				<?php endforeach;
 			} else {
 				echo '<div class="box-header bg-warning"><div style="padding:5px">';
 				echo Yii::t('app', 'No Birthday Today');
@@ -379,7 +379,7 @@ EOF;
 		    </div>
                     <div class="tab-pane" id="birth-upcoming">
 			<?php $empLi = "SELECT * FROM  emp_info WHERE  DATE_ADD(emp_dob, INTERVAL YEAR(CURDATE())-YEAR(emp_dob) + IF(DAYOFYEAR(CURDATE()) > DAYOFYEAR(emp_dob),1,0) YEAR) BETWEEN CURDATE()+1 AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)";
-			$empList = app\modules\employee\models\EmpInfo::findBySql($empLi)->all(); 
+			$empList = app\modules\employee\models\EmpInfo::findBySql($empLi)->all();
 			if(!empty($empList)) {
 				foreach($empList as $el) :
 				?>
@@ -392,7 +392,7 @@ EOF;
 					    <small class="label label-warning"><i class="fa fa-calendar"></i> <?php echo date('d M',strtotime($el->emp_dob)); ?></small></h3>
 					</div>
 				    </div><!-- /.box -->
-				<?php endforeach; 
+				<?php endforeach;
 			} else {
 				echo '<div class="box-header bg-warning"><div style="padding:5px">';
 				echo Yii::t('app', 'No Birthday within 30 days duration');
@@ -410,8 +410,8 @@ EOF;
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <ul class="todo-list" id="coursList">
-		     <?php 
-			$courseList = app\modules\course\models\Courses::find()->where(['is_status' => 0])->all(); 
+		     <?php
+			$courseList = app\modules\course\models\Courses::find()->where(['is_status' => 0])->all();
 			foreach($courseList as $cl) :
 		     ?>
                         <li>

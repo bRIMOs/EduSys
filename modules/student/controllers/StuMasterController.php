@@ -14,16 +14,16 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses. 
+ * along with this program.  If not, see http://www.gnu.org/licenses.
 
- * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics, 
+ * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics,
  * Opp. Thakkarnagar BRTS station, Ahmedbad - 382350, India or
  * at email address info@rudrasoftech.com.
- * 
+ *
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- 
+
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * RUDRA SOFTECH" logo. If the display of the logo is not reasonably feasible for
@@ -137,18 +137,18 @@ class StuMasterController extends Controller
 			$uniq_id = $info->stu_unique_id = 1;
 		}
 		else {
-			$chk_id = StuInfo::find()->where(['stu_unique_id' => $stud_uniq_no])->exists(); 
+			$chk_id = StuInfo::find()->where(['stu_unique_id' => $stud_uniq_no])->exists();
 			if($chk_id)
 				$uniq_id = $stud_uniq_no + 1;
 			else
-				$uniq_id = $stud_uniq_no;		
+				$uniq_id = $stud_uniq_no;
 		}
 
-		if($model->load(Yii::$app->request->post()) || $info->load(Yii::$app->request->post())) 
+		if($model->load(Yii::$app->request->post()) || $info->load(Yii::$app->request->post()))
 		{
 			$login_id = \app\models\Organization::find()->one()->org_stu_prefix.$uniq_id;
 
-			$model->attributes = $_POST['StuMaster'];			
+			$model->attributes = $_POST['StuMaster'];
 			$info->attributes = $_POST['StuInfo'];
 
 			$info->stu_dob = Yii::$app->dateformatter->getDateFormat($_POST['StuInfo']['stu_dob']);
@@ -159,13 +159,13 @@ class StuMasterController extends Controller
 			$info->stu_email_id = strtolower($_POST['StuInfo']['stu_email_id']);
 
 			$user->user_login_id = $login_id;
-			$user->user_password =  md5($user->user_login_id.$user->user_login_id); 
+			$user->user_password =  md5($user->user_login_id.$user->user_login_id);
 			$user->user_type = "S";
 			$user->created_by = Yii::$app->getid->getId();
 			$user->created_at = new \yii\db\Expression('NOW()');
 
-			if($info->save(false))  
-			{  
+			if($info->save(false))
+			{
 			$user->save(false);
 			$address->save(false);
 			}
@@ -209,7 +209,7 @@ class StuMasterController extends Controller
         $model = $this->findModel($sid);
 	$info = StuInfo::findOne($model->stu_master_stu_info_id);
 	if(isset($_REQUEST['stu_guard_id']))
-	$guard = StuGuardians::find()->where('guardia_stu_master_id ='.$model->stu_master_id.' AND stu_guardian_id = '.$_REQUEST['stu_guard_id'])->one();
+	$guard = StuGuardians::find()->where(['guardia_stu_master_id' => $model->stu_master_id, 'stu_guardian_id' => $_REQUEST['stu_guard_id']])->one();
 
 	$address = StuAddress::findOne($model->stu_master_stu_address_id);
 
@@ -217,7 +217,7 @@ class StuMasterController extends Controller
 	{
 		if($model->load(Yii::$app->request->post()) && $info->load(Yii::$app->request->post()))
 		{
-			$model->attributes = $_POST['StuMaster'];			
+			$model->attributes = $_POST['StuMaster'];
 			$info->attributes = $_POST['StuInfo'];
 
 			if(empty($_POST['StuInfo']['stu_email_id']))
@@ -228,7 +228,7 @@ class StuMasterController extends Controller
 			$info->stu_dob = Yii::$app->dateformatter->getDateFormat($_POST['StuInfo']['stu_dob']);
 			$model->updated_by = Yii::$app->getid->getId();
 			$model->updated_at = new \yii\db\Expression('NOW()');
-			
+
 			if ($model->save() && $info->save()) {
 				return $this->redirect(['view', 'id' => $model->stu_master_id, '#' => "personal"]);
 			}
@@ -239,18 +239,18 @@ class StuMasterController extends Controller
 		else
 		return $this->render('personal_info', [
                 'model' => $model, 'info' => $info,
-            ]);	
+            ]);
 	}
 	else if($tab == 'academic')
 	{
 		if($model->load(Yii::$app->request->post()) && $info->load(Yii::$app->request->post()))
 		{
-			$model->attributes = $_POST['StuMaster'];			
+			$model->attributes = $_POST['StuMaster'];
 			$info->attributes = $_POST['StuInfo'];
 			$info->stu_admission_date = Yii::$app->dateformatter->getDateFormat($_POST['StuInfo']['stu_admission_date']);
 			$model->updated_by = Yii::$app->getid->getId();
 			$model->updated_at = new \yii\db\Expression('NOW()');
-			
+
 			if ($model->save() && $info->save(false)) {
 				return $this->redirect(['view', 'id' => $model->stu_master_id, '#' => "academic"]);
 			}
@@ -269,23 +269,23 @@ class StuMasterController extends Controller
                         return ActiveForm::validate($guard);
          	}
 		if($guard->load(Yii::$app->request->post()) || isset($_POST['StuGuardians']))
-		{	
+		{
 			$guard->attributes = $_POST['StuGuardians'];
 			if(empty($_POST['StuGuardians']['guardian_email']))
 				$guard->guardian_email = NULL;
 			else
-				$guard->guardian_email = strtolower($_POST['StuGuardians']['guardian_email']);		
+				$guard->guardian_email = strtolower($_POST['StuGuardians']['guardian_email']);
 
 			$guard->updated_by = Yii::$app->getid->getId();
 			$guard->updated_at = new \yii\db\Expression('NOW()');
-			
+
 			if ($guard->save()) {
 				return $this->redirect(['view', 'id' => $model->stu_master_id, '#' => "guardians"]);
 			}
 			else
 				return $this->renderAjax('guardians_info', ['model' => $model, 'info' => $info, 'guard' => $guard]);
 		}
-		else 
+		else
 		return $this->renderAjax('guardians_info', [
                 'model' => $model, 'info' => $info, 'guard' => $guard
             ] );
@@ -294,15 +294,15 @@ class StuMasterController extends Controller
 	{
 		if($address->load(Yii::$app->request->post()))
 		{
-			$address->attributes = $_POST['StuAddress'];			
-	
+			$address->attributes = $_POST['StuAddress'];
+
 			if ($address->save()) {
 				return $this->redirect(['view', 'id' => $model->stu_master_id, '#' => "address"]);
 			}
 			else
 				return $this->render('address_info', ['model' => $model, 'info' => $info, 'address' => $address]);
 		}
-		else 
+		else
 		return $this->render('address_info', [
                 'model' => $model, 'info' => $info, 'address' => $address
             ]);
@@ -317,9 +317,9 @@ class StuMasterController extends Controller
     public function actionAdddocs()
     {
 	$stu_docs = new StuDocs();
-	
+
 	if ($stu_docs->load(Yii::$app->request->post())) {
-	
+
 		$stu_docs->attributes = $_POST['StuDocs'];
 
 		if(!empty($_REQUEST['StuDocs']['stu_docs_path']))
@@ -332,10 +332,10 @@ class StuMasterController extends Controller
 
 			if(!empty($stu_docs->stu_docs_path))  {
 				$ext= substr(strrchr($stu_docs->stu_docs_path, '.'), 1);
-			
+
 			if($ext != null)
 			{
-				$newFName = $_REQUEST['StuDocs']['stu_docs_stu_master_id'].'-'.($k).'-'.mt_rand(1, time()).'.'.$ext; 
+				$newFName = $_REQUEST['StuDocs']['stu_docs_stu_master_id'].'-'.($k).'-'.mt_rand(1, time()).'.'.$ext;
 				$stu_docs->stu_docs_path->saveAs(Yii::getAlias('@webroot').'/data/stu_docs/' .$stu_docs->stu_docs_path = $newFName);
 			}
 				$stu_docs->stu_docs_details = $_REQUEST['StuDocs']['stu_docs_details'][$k];
@@ -356,7 +356,7 @@ class StuMasterController extends Controller
 			return $this->redirect(['view', 'id' => $stu_docs->stu_docs_stu_master_id, '#' => 'documents']);
         }
     }
- 
+
     public function actionAddguardian($sid)
     {
 	$model = $this->findModel($sid);
@@ -393,12 +393,12 @@ class StuMasterController extends Controller
 	return $this->render('add_guardian', [
                 'model' => $model, 'guard' => $guard,
             ]);
-	
+
     }
 
     public function actionChangeStatus( $stu_doc_id, $sid )
     {
-	$model = StuDocs::find()->where('stu_docs_id = '.$stu_doc_id.' AND stu_docs_stu_master_id = '.$sid)->one();
+	$model = StuDocs::find()->where(['stu_docs_id' => $stu_doc_id, 'stu_docs_stu_master_id' => $sid])->one();
 	if($_REQUEST['d_status'] == 'APPROVED' && !empty($model))
 		$model->stu_docs_status = 1;
 	else if($_REQUEST['d_status'] == 'DISAPPROVED' && !empty($model))
@@ -407,23 +407,22 @@ class StuMasterController extends Controller
 		$model->stu_docs_status = 0;
 
 		$model->save(false);
-	
+
         return $this->redirect(['view', 'id' => $sid, '#'=>'documents']);
     }
 
     public function actionEmgChangeStatus()
     {
-	$guard = StuGuardians::find()->where('guardia_stu_master_id = '.$_REQUEST['sid'])->asArray()->all();
-	
-	foreach($guard as $gu) :
-		if($gu['is_emg_contact'] == 1) {
-			\Yii::$app->db->createCommand("UPDATE stu_guardians SET is_emg_contact =0 WHERE guardia_stu_master_id =".$_REQUEST['sid']." AND stu_guardian_id <> ".$_REQUEST['guard_id'])->execute();
-		}
-		else {
-			\Yii::$app->db->createCommand("UPDATE stu_guardians SET is_emg_contact =1 WHERE guardia_stu_master_id =".$_REQUEST['sid']." AND stu_guardian_id = ".$_REQUEST['guard_id'])->execute();
-		}	
-	endforeach;
-	
+        $guard = StuGuardians::find()->where(['guardia_stu_master_id' => $_REQUEST['sid']])->asArray()->all();
+
+    	foreach($guard as $gu) {
+    		if($gu['is_emg_contact'] == 1) {
+                StuGuardians::updateAll(['is_emg_contact' => 0], 'guardia_stu_master_id=:sid AND stu_guardian_id <> :gid', [':sid' => $_REQUEST['sid'], ':gid' => $_REQUEST['guard_id']]);
+    		}
+    		else {
+                StuGuardians::updateAll(['is_emg_contact' => 1], 'guardia_stu_master_id=:sid AND stu_guardian_id=:gid', [':sid' => $_REQUEST['sid'], ':gid' => $_REQUEST['guard_id']]);
+    		}
+    	}
         //return $this->redirect(['view', 'id' => $sid]);
     }
 
@@ -436,12 +435,12 @@ class StuMasterController extends Controller
 
 	if($info->load(Yii::$app->request->post()))
 	{
-		$info->attributes = $_POST['StuInfo'];	
+		$info->attributes = $_POST['StuInfo'];
 		$info->stu_photo = UploadedFile::getInstance($info,'stu_photo');
 		$old_photo = $old_info->stu_photo;
 		$model->updated_by = Yii::$app->getid->getId();
 		$model->updated_at = new \yii\db\Expression('NOW()');
-		
+
 	    if($info->stu_photo == NULL)
 	    {
 		$old_photo = $old_info->stu_photo;
@@ -450,11 +449,11 @@ class StuMasterController extends Controller
 	    else
 	    {
 	        $valid_photo = $info->validate();
-	    }	
+	    }
 	    if($valid_photo)
 	    {
 	        if($info->stu_photo != NULL)
-	        {   
+	        {
 		    $newfname = '';
 	            $ext = substr(strrchr($info->stu_photo,'.'),1);
 		    //following thing done for deleting previously uploaded photo
@@ -462,13 +461,13 @@ class StuMasterController extends Controller
 
 		    $dir1 = Yii::getAlias('@webroot').'/data/stu_images/';
 	            if(file_exists($dir1.$photo) && $photo != NULL) {
-	            	unlink($dir1.$photo);        
-	            }       
+	            	unlink($dir1.$photo);
+	            }
 	            if($ext!=null)
-	            {                
+	            {
 	                $newfname = $info->stu_first_name."_".$info->stu_unique_id.'.'.$ext;
 	                $info->stu_photo->saveAs(Yii::getAlias('@webroot').'/data/stu_images/'.$info->stu_photo = $newfname);
-	            }    
+	            }
 		}
 	     }
 	        if ($info->save(false)) {
@@ -477,7 +476,7 @@ class StuMasterController extends Controller
 		else
 			return $this->renderAjax('photo_form', ['model' => $model, 'info' => $info, ]);
 	    }
-	    else 
+	    else
 		return $this->renderAjax('photo_form', ['model' => $model, 'info' => $info, ]);
     }
 
@@ -492,7 +491,7 @@ class StuMasterController extends Controller
 		return Yii::$app->response->sendFile($file, date('Y-m-dHis').".".$ext);
 	}
 	else
-		throw new NotFoundHttpException('The requested page does not exist.');	
+		throw new NotFoundHttpException('The requested page does not exist.');
 
     }
     /**
@@ -509,7 +508,7 @@ class StuMasterController extends Controller
 	$model->updated_by = Yii::$app->getid->getId();
 	$model->updated_at = new \yii\db\Expression('NOW()');
 	$model->update();
-	
+
         return $this->redirect(['index']);
     }
 

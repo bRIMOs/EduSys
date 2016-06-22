@@ -14,16 +14,16 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses. 
+ * along with this program.  If not, see http://www.gnu.org/licenses.
 
- * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics, 
+ * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics,
  * Opp. Thakkarnagar BRTS station, Ahmedbad - 382350, India or
  * at email address info@rudrasoftech.com.
- * 
+ *
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- 
+
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * RUDRA SOFTECH" logo. If the display of the logo is not reasonably feasible for
@@ -74,7 +74,7 @@ class BankMasterController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-	    'model' => $model,	
+	    'model' => $model,
         ]);
     }
 
@@ -98,7 +98,7 @@ class BankMasterController extends Controller
     public function actionCreate()
     {
         $model = new BankMaster();
-	$searchModel = new BankMasterSearch();
+       $searchModel = new BankMasterSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
 	if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
@@ -106,13 +106,13 @@ class BankMasterController extends Controller
                 return ActiveForm::validate($model);
        	}
         if ($model->load(Yii::$app->request->post())) {
-		
+
 		$model->attributes = $_POST['BankMaster'];
 		$model->created_by = Yii::$app->getid->getId();
 		$model->created_at= new \yii\db\Expression('NOW()');
 		if($model->save())
 			return $this->redirect(['index']);
-		
+
             }
 	    return $this->render('index', ['model' => $model, 'searchModel' => $searchModel,'dataProvider' => $dataProvider,]);
     }
@@ -155,7 +155,7 @@ class BankMasterController extends Controller
         //$this->findModel($id)->delete();
 	$model = BankMaster::findOne($id);
 	$model->is_status = 2;
-	$model->updated_by = Yii::$app->getid->getId(); 
+	$model->updated_by = Yii::$app->getid->getId();
 	$model->updated_at = new \yii\db\Expression('NOW()');
 	$model->save();
 

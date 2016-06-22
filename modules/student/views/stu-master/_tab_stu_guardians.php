@@ -1,11 +1,11 @@
-<?php 
+<?php
  use yii\helpers\Html;
 $adminUser = array_keys(\Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId()));
 
 	$stu_guard = new \yii\db\Query();
 	$stu_guard -> select('*')
 	        ->from('stu_guardians sg')
-		->where('sg.guardia_stu_master_id = '.$_REQUEST['id']);
+		->where(['sg.guardia_stu_master_id' => $_REQUEST['id']]);
 
 	$command = $stu_guard->createCommand();
 	$stu_data = $command->queryAll();
@@ -13,7 +13,7 @@ $adminUser = array_keys(\Yii::$app->authManager->getRolesByUser(Yii::$app->user-
 
 <div class="row">
   <div class="col-xs-12 col-md-12 col-lg-12">
-	<h2 class="page-header">	
+	<h2 class="page-header">
 	<i class="fa fa-info-circle"></i> <?= Html::encode(Yii::t('stu', 'Guardians Details')) ?>
 	<div class="<?= (Yii::$app->language == 'ar') ? 'pull-left' : 'pull-right'?>">
 	<?php if(Yii::$app->user->can('/student/stu-master/addguardian')) { ?>
@@ -26,12 +26,12 @@ $adminUser = array_keys(\Yii::$app->authManager->getRolesByUser(Yii::$app->user-
 
 <?php
      if(!empty($stu_data))
-     {	
+     {
 	$i = 1;
 	foreach($stu_data as $sd)
-	{	
+	{
 		if($sd['is_emg_contact'] == 1)
-			$check = true; 
+			$check = true;
 		else
 			$check = false;
 ?>
@@ -51,7 +51,7 @@ $adminUser = array_keys(\Yii::$app->authManager->getRolesByUser(Yii::$app->user-
 				'confirm' => Yii::t('stu', 'Are you sure you want to delete this item?'),
 				'method' => 'post',
 			],
-		    ]) ?> 
+		    ]) ?>
 		<?php } ?>
         </div>
 	</h2>
@@ -65,7 +65,7 @@ $JSClick = <<<EOF
 function(event, state) {
 	var st_id = this.value;
 	var sid = $( this ).attr( "sid" );
-	var guard_id = $( this ).attr( "guard_id" );	
+	var guard_id = $( this ).attr( "guard_id" );
 	$.ajax({
 		type: "POST",
 		url: "{$url}",
@@ -93,10 +93,10 @@ EOF;
 				    'options' => ['data-size' => 'small', 'data-off-color' => 'warning', 'data-on-color' => 'success', 'data-on-text' => 'Yes', 'data-off-text' => 'No', 'sid' => $model->stu_master_id, 'guard_id' => $sd['stu_guardian_id'], 'class' => 'emg_emg',]
 				],
 			    ],
-			    'clientOptions' => [ 'onSwitchChange' => new \yii\web\JsExpression($JSClick), ],	
+			    'clientOptions' => [ 'onSwitchChange' => new \yii\web\JsExpression($JSClick), ],
 			    'labelOptions' => ['style' => 'font-size:14px;']
 		   ]);?>
-		<?php } else { 
+		<?php } else {
 			echo (($sd['is_emg_contact'] == 1) ? "<span class='label label-success'>".Yii::t('stu','Yes')."</span>" : "<span class='label label-warning'>".Yii::t('stu','No')."</span>");
 		}?>
         </div>
@@ -159,7 +159,7 @@ EOF;
 	</div>
 </div>
 <?php
-	$i++;	
+	$i++;
 	}
     }
     else

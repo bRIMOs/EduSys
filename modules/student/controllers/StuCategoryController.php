@@ -14,16 +14,16 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses. 
+ * along with this program.  If not, see http://www.gnu.org/licenses.
 
- * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics, 
+ * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics,
  * Opp. Thakkarnagar BRTS station, Ahmedbad - 382350, India or
  * at email address info@rudrasoftech.com.
- * 
+ *
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- 
+
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * RUDRA SOFTECH" logo. If the display of the logo is not reasonably feasible for
@@ -98,7 +98,7 @@ class StuCategoryController extends Controller
     public function actionCreate()
     {
         $model = new StuCategory();
-	$searchModel = new StuCategorySearch();
+        $searchModel = new StuCategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         if ($model->load(Yii::$app->request->post())) {
 
@@ -117,7 +117,7 @@ class StuCategoryController extends Controller
                		 'model' => $model,'searchModel' => $searchModel,
 			    'dataProvider' => $dataProvider,
 			]);
-            
+
         } else {
             	return $this->render('index', [
                		 'model' => $model,'searchModel' => $searchModel,
@@ -154,7 +154,7 @@ class StuCategoryController extends Controller
                		 'model' => $model,'searchModel' => $searchModel,
 			    'dataProvider' => $dataProvider,
 			]);
-            
+
         } else {
            return $this->render('index', [
                		 'model' => $model,'searchModel' => $searchModel,

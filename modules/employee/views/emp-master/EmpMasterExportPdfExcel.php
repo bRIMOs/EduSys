@@ -5,9 +5,9 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 ?>
 <div class="emp-master-index">
-    <?php  
+    <?php
 	$org = app\models\Organization::find()->asArray()->one();
-	$model->sort = false; 
+	$model->sort = false;
 	$dispColumn = false;
 	if($type == 'Excel') {
 		echo "<meta http-equiv=\"Content-type\" content=\"text/html;charset=utf-8\" />";
@@ -17,7 +17,7 @@ use yii\helpers\ArrayHelper;
     ?>
     <?= GridView::widget([
         'dataProvider' => $model,
-	'layout' => '{items}',
+        'layout' => '{items}',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -25,7 +25,7 @@ use yii\helpers\ArrayHelper;
 		'attribute' => 'empMasterEmpInfo.emp_unique_id',
 		'value' => 'empMasterEmpInfo.emp_unique_id',
  	    ],
-	
+
 	    [
 		'attribute' => 'empMasterEmpInfo.emp_first_name',
 		'value' => 'empMasterEmpInfo.emp_first_name',
@@ -33,22 +33,22 @@ use yii\helpers\ArrayHelper;
 	    [
 		'attribute' => 'empMasterEmpInfo.emp_middle_name',
 		'value' => 'empMasterEmpInfo.emp_middle_name',
- 	    ],	
+ 	    ],
             [
 		'attribute' => 'empMasterEmpInfo.emp_last_name',
 		'value' => 'empMasterEmpInfo.emp_last_name',
  	    ],
-	 
+
 	    [
 		'attribute' => 'empMasterDepartment.emp_department_name',
 		'value' => 'empMasterDepartment.emp_department_name',
             ],
-    
+
 	    [
 		'attribute' => 'empMasterDesignation.emp_designation_name',
 		'value' => 'empMasterDesignation.emp_designation_name',
             ],
- 
+
 	    [
 		'attribute' => 'empMasterCategory.emp_category_name',
 		'value' => 'empMasterCategory.emp_category_name',
@@ -84,4 +84,3 @@ use yii\helpers\ArrayHelper;
         ],
     ]); ?>
 </div>
-

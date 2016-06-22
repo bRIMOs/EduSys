@@ -18,8 +18,8 @@ use app\modules\employee\models\EmpDesignation;
 $this->title = Yii::t('report', 'Employee Info Report');
 $this->params['breadcrumbs'][] = $this->title;
 
-$_SESSION['query']=$query;
-$_SESSION['selected_list']=$selected_list;
+//$_SESSION['query']=$query;
+//$_SESSION['selected_list']=$selected_list;
 ?>
 
 <div class="row">
@@ -30,8 +30,8 @@ $_SESSION['selected_list']=$selected_list;
 	          <h3 class="box-title"><i class="fa fa-info-circle"></i> <?= $this->title ?></h3>
           <div class="box-tools <?= (Yii::$app->language == 'ar') ? 'pull-left' : 'pull-right'; ?>">
           	<?php echo Html::a('<i class="fa fa-arrow-circle-left"></i> '.Yii::t('report', "Back"), ['employee/empinforeport'], ['class'=>'btn btn-back', 'style'=>'color:#fff']);?> &nbsp;
-<?php echo Html::a('<i class="fa fa-file-excel-o"></i> '.Yii::t('report',"Excel"),['employee/selected-employee-list','employeelistexcelexport'=>'employeelistexcel'],array('title'=>'Export to Excel', 'target'=>'_blank', 'class'=>'btn btn-info', 'style'=>'color:#fff'));?> &nbsp;
-<?php echo Html::a('<i class="fa fa-file-pdf-o"></i> '.Yii::t('report',"PDF"),array('employee/selected-employee-list','employeelistexport'=>'employeelistpdf'),array('title'=>'Export to PDF','target'=>'_blank','class'=>'btn btn-warning', 'style'=>'color:#fff')); ?>	
+            <?php echo Html::a('<i class="fa fa-file-excel-o"></i> '.Yii::t('report',"Excel"),['empinforeport', 'exportExcel'=>'excel'], array('title'=>'Export to Excel', 'target'=>'_blank', 'class'=>'btn btn-info', 'style'=>'color:#fff'));?> &nbsp;
+            <?php echo Html::a('<i class="fa fa-file-pdf-o"></i> '.Yii::t('report',"PDF"),array('empinforeport','exportPDF'=>'PDF'),array('title'=>'Export to PDF','target'=>'_blank','class'=>'btn btn-warning', 'style'=>'color:#fff')); ?>
           </div> <!-- box-tools -->
         </div><!-- /.box-header -->
 
@@ -40,7 +40,7 @@ $_SESSION['selected_list']=$selected_list;
 if(!empty($employee_data) && !empty($selected_list))
 {
 	$emp_info = new EmpInfo();
-	echo "<table class ='table-bordered table table-striped'>";	
+	echo "<table class ='table-bordered table table-striped'>";
 	echo "<tr><th class='text-center'>".Yii::t('report', 'SI No.')."</th>";
 	foreach($selected_list as $s)
 	{
@@ -69,9 +69,9 @@ if(!empty($employee_data) && !empty($selected_list))
 	}
 	echo "</tr>";
 	$i = 1;
-	$m = 1;	
+	$m = 1;
 	foreach($employee_data as $t=>$sd)
-	{ 		
+	{
 		echo "<tr>";
 		echo "<td class='text-center'>".$i."</td>";
 		foreach($selected_list as $s)
@@ -84,7 +84,7 @@ if(!empty($employee_data) && !empty($selected_list))
 				{
 					$add = EmpAddress::findOne($sd['emp_master_emp_address_id']);
 					if($add->emp_cadd_city != null)
-					echo "<td class='text-center'>".City::findOne($add->emp_cadd_city)->city_name."</td>";			
+					echo "<td class='text-center'>".City::findOne($add->emp_cadd_city)->city_name."</td>";
 					else
 					echo "<td>&nbsp;</td>";
 				}
@@ -98,23 +98,23 @@ if(!empty($employee_data) && !empty($selected_list))
 					echo "<td> &nbsp;</td>";
 			}
 			else if($s == 'emp_category_name'){
-				echo "<td class='text-center'>".EmpCategory::findOne($sd['emp_master_category_id'])->emp_category_name."</td>";	
-			}			
+				echo "<td class='text-center'>".EmpCategory::findOne($sd['emp_master_category_id'])->emp_category_name."</td>";
+			}
 		        else if($s == 'emp_cadd')
-			{	
+			{
 				if($sd['emp_master_emp_address_id']!=0)
 				{
 					if(!empty(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_cadd_city))
 					{
-						$add_c = "<br/>".City::findOne(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_cadd_city)->city_name.", ";	
+						$add_c = "<br/>".City::findOne(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_cadd_city)->city_name.", ";
 					}
 					else
 					{
 						$add_c = '';
-					}					
+					}
 					if(!empty(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_cadd_state))
 					{
-						$add_s = State::findOne(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_cadd_state)->state_name.", ";	
+						$add_s = State::findOne(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_cadd_state)->state_name.", ";
 					}
 					else
 					{
@@ -122,33 +122,33 @@ if(!empty($employee_data) && !empty($selected_list))
 					}
 					if(!empty(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_cadd_country))
 					{
-						$add_co = Country::findOne(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_cadd_country)->country_name;	
+						$add_co = Country::findOne(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_cadd_country)->country_name;
 					}
 					else
 					{
 						$add_co = '';
-					}					
+					}
 					echo "<td class='text-center'>".EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_cadd." ".$add_c." ".$add_s." ".$add_co."</td>";
-					
+
 				}
 				else
 					echo "<td class='text-center'>&nbsp;</td>";
 			}
 			else if($s == 'emp_padd')
-			{	
+			{
 				if($sd['emp_master_emp_address_id']!=0)
 				{
 					if(!empty(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_padd_city))
 					{
-						$add_c = "<br/>".City::findOne(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_padd_city)->city_name.", ";	
+						$add_c = "<br/>".City::findOne(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_padd_city)->city_name.", ";
 					}
 					else
 					{
 						$add_c = '';
-					}					
+					}
 					if(!empty(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_padd_state))
 					{
-						$add_s = State::findOne(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_padd_state)->state_name.", ";	
+						$add_s = State::findOne(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_padd_state)->state_name.", ";
 					}
 					else
 					{
@@ -156,7 +156,7 @@ if(!empty($employee_data) && !empty($selected_list))
 					}
 					if(!empty(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_padd_country))
 					{
-						$add_co = Country::findOne(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_padd_country)->country_name;	
+						$add_co = Country::findOne(EmpAddress::findOne($sd['emp_master_emp_address_id'])->emp_padd_country)->country_name;
 					}
 					else
 					{
@@ -166,17 +166,17 @@ if(!empty($employee_data) && !empty($selected_list))
 				}
 				else  {
 				echo "<td>&nbsp;</td>";
-				  }				
-			}				
+				  }
+			}
 			else if($s == 'emp_joining_date')
 			{
 				$jdate = EmpInfo::findOne($sd['emp_master_emp_info_id'])->$s;
-				echo "<td class='text-center'>".date('d-m-Y',strtotime($jdate))."</td>";	
+				echo "<td class='text-center'>".date('d-m-Y',strtotime($jdate))."</td>";
 			}
 			else if($s == 'emp_dob')
 			{
 				$bdate = EmpInfo::findOne($sd['emp_master_emp_info_id'])->$s;
-				echo "<td class='text-center'>".date('d-m-Y',strtotime($bdate))."</td>";	
+				echo "<td class='text-center'>".date('d-m-Y',strtotime($bdate))."</td>";
 			}
 			else
 			{
@@ -185,7 +185,7 @@ if(!empty($employee_data) && !empty($selected_list))
 		}
 		$i++;
 		echo "</tr>";
-		$m++;		
+		$m++;
 	}
  echo"</table>";
 }

@@ -15,16 +15,16 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses. 
+ * along with this program.  If not, see http://www.gnu.org/licenses.
 
- * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics, 
+ * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics,
  * Opp. Thakkarnagar BRTS station, Ahmedbad - 382350, India or
  * at email address info@rudrasoftech.com.
- * 
+ *
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- 
+
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * RUDRA SOFTECH" logo. If the display of the logo is not reasonably feasible for
@@ -95,7 +95,12 @@ class SiteController extends Controller
 		$isEmployee = Yii::$app->session->get('emp_id');
 		$holidayData = \app\models\NationalHolidays::find()->andWhere(['is_status'=>0])->asArray()->all();
 		if(isset($isStudent)) {
-		    $payFees = Yii::$app->db->createCommand("SELECT SUM(fees_pay_tran_amount) FROM fees_payment_transaction WHERE fees_pay_tran_stu_id=".Yii::$app->session->get('stu_id')." AND is_status=0")->queryScalar(); 
+		    $payFees = Yii::$app->db->createCommand("SELECT SUM(fees_pay_tran_amount) FROM fees_payment_transaction WHERE fees_pay_tran_stu_id=:stuId AND is_status=:status")
+                ->bindValues([
+                        ':stuId' => Yii::$app->session->get('stu_id'),
+                        ':status' => 0,
+                    ])
+                ->queryScalar();
 		    $currentFeesData = \app\modules\fees\models\FeesPaymentTransaction::getUnpaidTotal($isStudent);
         	    return $this->render('stu-dashboard', ['holidayData'=>$holidayData, 'currentFeesData'=>$currentFeesData, 'payFees'=>$payFees]);
 		}
@@ -107,11 +112,11 @@ class SiteController extends Controller
     }
 
     public function checkInstallation()
-    {	
+    {
 		$checkTbl = Yii::$app->db->schema->tableNames;
 		if(empty($checkTbl)) {
 			return $this->redirect(['/installation/db-import']);
-		} 
+		}
 		$chkUserTbl = \app\models\User::find()->exists();
 		$chkInstituteTbl = \app\models\Organization::find()->exists();
 		if(!$chkInstituteTbl || !$chkUserTbl) {
@@ -138,7 +143,7 @@ class SiteController extends Controller
 			\Yii::$app->session->setFlash('loginError', '<i class="fa fa-warning"></i><b> Incorrect username or password. !</b>');
 		      	return $this->render('login', ['model' => $model]);
 		}
-		
+
 		$login->login_user_id = $log['user_id'];
 		$loginuser = $login->login_user_id;
 
@@ -159,14 +164,14 @@ class SiteController extends Controller
 		}
 		else {
 		      \Yii::$app->session->setFlash('loginError', '<i class="fa fa-warning"></i><b> These Login credentials are Blocked/Deactive by Admin</b>');
-		      return $this->render('login', ['model' => $model,]);	
+		      return $this->render('login', ['model' => $model,]);
 		}
 
 		$login->login_status = 1;
 		$login->login_at = new \yii\db\Expression('NOW()');
 		$login->user_ip_address=$_SERVER['REMOTE_ADDR'];
 		$login->save(false);
-		
+
 		if($model->login()) {
 			if(!isset(Yii::$app->request->cookies['language'])) {
 				return $this->redirect(['language']);
@@ -185,8 +190,8 @@ class SiteController extends Controller
     public function actionLogout()
     {
         if(isset(Yii::$app->user->id))
-		\app\models\LoginDetails::updateAll(['login_status' => 0, 'logout_at'=> new \yii\db\Expression('NOW()')],'login_user_id='.Yii::$app->user->id.' AND login_status = 1');	
-				
+		\app\models\LoginDetails::updateAll(['login_status' => 0, 'logout_at'=> new \yii\db\Expression('NOW()')],'login_user_id='.Yii::$app->user->id.' AND login_status = 1');
+
 		Yii::$app->user->logout();
 		return $this->goHome();
     }
@@ -220,8 +225,8 @@ class SiteController extends Controller
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Content-Transfer-Encoding: binary');
 		header('Content-type: '.$model[0]['org_logo_type']);
-		echo $model[0]['org_logo'];  
-	
+		echo $model[0]['org_logo'];
+
     }
 
 	public function actionLanguage()

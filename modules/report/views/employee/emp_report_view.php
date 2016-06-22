@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('report', 'Reports'), 'url' 
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<h2 class="page-header">	
+<h2 class="page-header">
 	<i class="fa fa-info-circle"></i> <?php echo Yii::t('report', 'Employee Info Report'); ?>
 </h2>
 
@@ -31,8 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box-header with-border">
 	<h4 class="box-title"><i class="fa fa-search"></i> <?php echo Yii::t('report', 'Select Criteria'); ?></h4>
     </div>
-    <?php $form = ActiveForm::begin(['id' => 'emp-report-view-form',]); ?>
-    <div class="box-body">   
+    <?php $form = ActiveForm::begin(['id' => 'emp-report-view-form', 'action'=> ['empinforeport']]); ?>
+    <div class="box-body">
 	<div class="row">
 	    <div class="col-xs-12 col-sm-4 col-lg-4 form-group">
 	      	<?= Html::label(Yii::t('report', 'Department'),'',['class'=> 'control-label']); ?>
@@ -46,21 +46,21 @@ $this->params['breadcrumbs'][] = $this->title;
 	    <div class="col-xs-12 col-sm-4 col-lg-4 form-group">
 		<?= Html::label(Yii::t('report', 'Category'), ''); ?>
 		<?php echo Html::dropDownList('category',null,ArrayHelper::map(\app\modules\employee\models\EmpCategory::find()->where(['is_status' => 0])->all(),'emp_category_id','emp_category_name'),['prompt'=>Yii::t('stu', '--- Select Category ---'),'class'=>'form-control']); ?>
-	    </div>			
+	    </div>
 	</div>
 	<div class="row">
 		<div class="col-xs-12 col-sm-4 col-lg-4 form-group">
 			<?= Html::label(Yii::t('report','Gender'),''); ?>
 			<?php echo Html::dropDownList('gender',null,EmpInfo::getGenderOptions(),['prompt'=>Yii::t('stu', '--- Select Gender ---'),'class'=>'form-control']);?>
 		</div>
-		<div class="col-xs-12 col-sm-4 col-lg-4 form-group">	
+		<div class="col-xs-12 col-sm-4 col-lg-4 form-group">
 			<?= Html::label(Yii::t('report', 'City'),'');  ?>
 			<?php echo Html::dropDownList('city',null,ArrayHelper::map(\app\models\City::find()->where(['is_status' => 0])->all(),'city_id','city_name'),['prompt'=>Yii::t('stu', '--- Select City ---'),'class'=>'form-control']); ?>
 		</div>
 	</div>
 	<hr>
 	<div class="row">
-		<?php	echo $this->render('emp_select_form', ['query'=>$query]); ?>
+		<?php	echo $this->render('emp_select_form', []); ?>
 	</div>
     </div> <!--/ box-body -->
     <div class="box-footer">

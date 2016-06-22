@@ -14,16 +14,16 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses. 
+ * along with this program.  If not, see http://www.gnu.org/licenses.
 
- * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics, 
+ * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics,
  * Opp. Thakkarnagar BRTS station, Ahmedbad - 382350, India or
  * at email address info@rudrasoftech.com.
- * 
+ *
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- 
+
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * RUDRA SOFTECH" logo. If the display of the logo is not reasonably feasible for
@@ -100,11 +100,11 @@ class EmpAddressController extends Controller
     {
         $model = new EmpAddress();
         if ($model->load(Yii::$app->request->post())) {
-	    $model->attributes = $_POST['EmpAddress'];
-	    if($model->save())
-			return $this->redirect(['view', 'id' => $model->emp_address_id]);
-		else
-			return $this->render('create', ['model' => $model,]);
+    	    $model->attributes = $_POST['EmpAddress'];
+    	    if($model->save())
+                return $this->redirect(['view', 'id' => $model->emp_address_id]);
+    		else
+    			return $this->render('create', ['model' => $model,]);
         } else {
             return $this->render('create', [
                 'model' => $model,

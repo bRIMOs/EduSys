@@ -14,16 +14,16 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses. 
+ * along with this program.  If not, see http://www.gnu.org/licenses.
 
- * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics, 
+ * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics,
  * Opp. Thakkarnagar BRTS station, Ahmedbad - 382350, India or
  * at email address info@rudrasoftech.com.
- * 
+ *
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- 
+
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * RUDRA SOFTECH" logo. If the display of the logo is not reasonably feasible for
@@ -85,7 +85,7 @@ use Yii;
 
 class EmpInfo extends \yii\db\ActiveRecord
 {
-	
+
 	const TYPE_MALE= 'MALE';
 	const TYPE_FEMALE='FEMALE';
 	const TYPE_APLUS='A+';
@@ -101,7 +101,7 @@ class EmpInfo extends \yii\db\ActiveRecord
 	const TYPE_UNMARRIED='UNMARRIED';
 	const TYPE_DIVORCED='DIVORCED';
 	const TYPE_MR='Mr.';
-	const TYPE_MRS='Mrs.'; 
+	const TYPE_MRS='Mrs.';
 	const TYPE_MISS='Ms.';
 	const TYPE_PROF='Prof.';
 	const TYPE_DR='Dr.';
@@ -119,9 +119,8 @@ class EmpInfo extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-	 
         return [
-	    [['emp_unique_id', 'emp_first_name', 'emp_last_name', 'emp_info_emp_master_id'], 'required','message'=>''],
+            [['emp_unique_id', 'emp_first_name', 'emp_last_name', 'emp_info_emp_master_id'], 'required','message'=>''],
             [['emp_photo', 'emp_email_id', 'emp_attendance_card_id', 'emp_dob'], 'safe'],
 			[['emp_attendance_card_id'], 'default', 'value' => NULL],
             [['emp_mobile_no', 'emp_experience_year', 'emp_experience_month', 'emp_guardian_mobile_no', 'emp_info_emp_master_id', 'emp_unique_id'], 'integer'],
@@ -135,16 +134,15 @@ class EmpInfo extends \yii\db\ActiveRecord
             [['emp_bankaccount_no', 'emp_guardian_phone_no'], 'string', 'max' => 25],
             [['emp_hobbies'], 'string', 'max' => 100],
             [['emp_guardian_relation'], 'string', 'max' => 30],
-	    [['emp_email_id','emp_guardian_email_id'],'email'], 			       
-	    [['emp_email_id','emp_guardian_email_id','emp_attendance_card_id','emp_mobile_no',
-		'emp_info_emp_master_id','emp_unique_id'], 'unique'],
-	    [['emp_dob', 'emp_joining_date'], 'string'],
-            ['emp_dob', 'bdate'],
-	    ['emp_joining_date','ckjoindate'],
-	    [['emp_guardian_mobile_no','emp_mobile_no'], 'integer', 'min' =>10],
-	    
-        ];
+    	    [['emp_email_id','emp_guardian_email_id'],'email'],
+    	    [['emp_email_id','emp_guardian_email_id','emp_attendance_card_id','emp_mobile_no',
+    		'emp_info_emp_master_id','emp_unique_id'], 'unique'],
+    	    [['emp_dob', 'emp_joining_date'], 'string'],
+                ['emp_dob', 'bdate'],
+    	    ['emp_joining_date','ckjoindate'],
+    	    [['emp_guardian_mobile_no','emp_mobile_no'], 'integer', 'min' =>10],
 
+        ];
     }
 
     /**
@@ -166,7 +164,7 @@ class EmpInfo extends \yii\db\ActiveRecord
             'emp_dob' => Yii::t('emp', 'Emp Date of Birth'),
             'emp_religion' => Yii::t('emp', 'Religion'),
             'emp_bloodgroup' => Yii::t('emp', 'Blood Group'),
-            'emp_joining_date' => Yii::t('emp', 'Joining Date'),	
+            'emp_joining_date' => Yii::t('emp', 'Joining Date'),
    			'emp_birthplace' => Yii::t('emp', 'Birth Place'),
             'emp_email_id' => Yii::t('emp', 'Email ID'),
             'emp_maritalstatus' => Yii::t('emp', 'Marital Status'),
@@ -213,10 +211,10 @@ class EmpInfo extends \yii\db\ActiveRecord
 
     public static function getGenderOptions()
     {
-	return[
-	Yii::t('emp', self::TYPE_MALE) => Yii::t('emp', 'MALE'),
-	Yii::t('emp', self::TYPE_FEMALE) => Yii::t('emp', 'FEMALE'),
-	];
+    	return[
+        	Yii::t('emp', self::TYPE_MALE) => Yii::t('emp', 'MALE'),
+        	Yii::t('emp', self::TYPE_FEMALE) => Yii::t('emp', 'FEMALE'),
+    	];
     }
 
     /**
@@ -224,8 +222,8 @@ class EmpInfo extends \yii\db\ActiveRecord
      */
     public static function getEmpPhoto($imgName)
     {
-	$dispImg = is_file(Yii::getAlias('@webroot').'/data/emp_images/'.$imgName) ? true :false;
-	return Yii::getAlias('@web')."/data/emp_images/".(($dispImg) ? $imgName : "no-photo.png");
+    	$dispImg = is_file(Yii::getAlias('@webroot').'/data/emp_images/'.$imgName) ? true :false;
+    	return Yii::getAlias('@web')."/data/emp_images/".(($dispImg) ? $imgName : "no-photo.png");
     }
 
     /**
@@ -233,17 +231,17 @@ class EmpInfo extends \yii\db\ActiveRecord
     */
     public static function getBloodGroup()
     {
-	return[
-	Yii::t('emp', self::TYPE_UNKNON) => Yii::t('emp', 'Unknown'),
-	Yii::t('emp', self::TYPE_APLUS) => Yii::t('emp', 'A+'),
-	Yii::t('emp', self::TYPE_AMINUS) => Yii::t('emp', 'A-'),
-	Yii::t('emp', self::TYPE_BPLUS) => Yii::t('emp', 'B+'),
-	Yii::t('emp', self::TYPE_BMINUS) => Yii::t('emp', 'B-'),
-	Yii::t('emp', self::TYPE_ABPLUS) => Yii::t('emp', 'AB+'),
-	Yii::t('emp', self::TYPE_ABMINUS) => Yii::t('emp', 'AB-'),
-	Yii::t('emp', self::TYPE_OPLUS) => Yii::t('emp', 'O+'),
-	Yii::t('emp', self::TYPE_OMINUS) => Yii::t('emp', 'O-'),
-	];
+    	return[
+        	Yii::t('emp', self::TYPE_UNKNON) => Yii::t('emp', 'Unknown'),
+        	Yii::t('emp', self::TYPE_APLUS) => Yii::t('emp', 'A+'),
+        	Yii::t('emp', self::TYPE_AMINUS) => Yii::t('emp', 'A-'),
+        	Yii::t('emp', self::TYPE_BPLUS) => Yii::t('emp', 'B+'),
+        	Yii::t('emp', self::TYPE_BMINUS) => Yii::t('emp', 'B-'),
+        	Yii::t('emp', self::TYPE_ABPLUS) => Yii::t('emp', 'AB+'),
+        	Yii::t('emp', self::TYPE_ABMINUS) => Yii::t('emp', 'AB-'),
+        	Yii::t('emp', self::TYPE_OPLUS) => Yii::t('emp', 'O+'),
+        	Yii::t('emp', self::TYPE_OMINUS) => Yii::t('emp', 'O-'),
+    	];
      }
 
      /**
@@ -257,7 +255,7 @@ class EmpInfo extends \yii\db\ActiveRecord
 	Yii::t('emp', self::TYPE_DIVORCED) => Yii::t('emp', 'DIVORCED'),
 	];
      }
-	
+
       /**
       * This method is for Title Gender Drop Down.
        */
@@ -265,7 +263,7 @@ class EmpInfo extends \yii\db\ActiveRecord
       {
 	 return[
 	 Yii::t('emp', self::TYPE_MR) => Yii::t('emp', 'Mr.'),
-	 Yii::t('emp', self::TYPE_MRS) => Yii::t('emp', 'Mrs.'), 
+	 Yii::t('emp', self::TYPE_MRS) => Yii::t('emp', 'Mrs.'),
 	 Yii::t('emp', self::TYPE_MISS) => Yii::t('emp', 'Ms.'),
 	 Yii::t('emp', self::TYPE_PROF) => Yii::t('emp', 'Prof.'),
 	 Yii::t('emp', self::TYPE_DR) => Yii::t('emp', 'Dr.'),
@@ -273,28 +271,28 @@ class EmpInfo extends \yii\db\ActiveRecord
        }
 
       /* check birthdate   */
-      public function bdate($attr,$param) 
-      {			
-	$currentDate = strtotime(date('Y-m-d')); 
+      public function bdate($attr,$param)
+      {
+	$currentDate = strtotime(date('Y-m-d'));
 	$dob = date('Y-m-d',strtotime($this->$attr));
 	if(strtotime($dob) >= $currentDate)  {
-		$this->addError($attr, "Birth date must be less than Current date.");	
+		$this->addError($attr, "Birth date must be less than Current date.");
 		return false;
 	}
 	else
 		return true;
-		
+
       }
 
       /* check joining date  */
       public function ckjoindate($attr,$param)
       {
-	$currentDate = strtotime(date('Y-m-d')); 
+	$currentDate = strtotime(date('Y-m-d'));
 	$joinDate =date('Y-m-d',strtotime($this->$attr));
 	if(strtotime($joinDate) >= $currentDate)
-	{					
-		$this->addError($attr,"Joining date must be less than Current date.");	
-		return false;	
+	{
+		$this->addError($attr,"Joining date must be less than Current date.");
+		return false;
 	}
 	else
 		return true;
@@ -304,9 +302,9 @@ class EmpInfo extends \yii\db\ActiveRecord
      {
 		return ($this->emp_first_name." ".$this->emp_last_name);
      }
-     
+
      function getEmpFullName()
      {
 		return ($this->emp_first_name." ".$this->emp_middle_name." ".$this->emp_last_name);
-     }		
+     }
 }

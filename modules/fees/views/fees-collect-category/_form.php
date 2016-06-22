@@ -10,59 +10,7 @@ use yii\helpers\ArrayHelper;
 
 // Indian Ruppee code: &#8377;
 ?>
-<script>
 
-$(document).ready(function() {
-        $('#<?= Html::getInputId($model, "fees_collect_batch_id")?>').multiselect({
-            includeSelectAllOption: true,
-            enableFiltering: true,
-	    enableCaseInsensitiveFiltering: true,
-	    enableClickableOptGroups: true,
-	    buttonText: function(options, select) {
-                if (options.length === 0) {
-                    return 'Select Batch(es)';
-                }
-		else {
-                     var labels = [];
-                     options.each(function() {
-                         if ($(this).attr('label') !== undefined) {
-                             labels.push($(this).attr('label'));
-                         }
-                         else {
-                             labels.push($(this).text());
-                         }
-                     });
-                     return labels.join(', ') + '';
-                }
-	    }
-        });
-    });
-
-</script>
-<style>
-fieldset.scheduler-border {
-    border: 1px groove #ddd !important;
-    padding: 0 15px 15px 15px !important;
-    margin: 0 0 10px 0 !important;
-    -webkit-box-shadow:  0px 0px 0px 0px #000;
-            box-shadow:  0px 0px 0px 0px #000;
-}
-
-legend.scheduler-border {
-    font-size: 1.2em !important;
-    font-weight: bold !important;
-    text-align: left !important;
-    width:auto;
-    padding:0 10px;
-    border-bottom:none;
-}
-ul.multiselect-container{
-    overflow: auto !important;
-    height: 230px !important;
-    left: auto;
-    top: 35px;
-}
-</style>
 <div class="col-xs-12 col-lg-12">
   <div class="box-success box view-item col-xs-12 col-lg-12">
    <div class="fees-collect-category-form">
@@ -129,8 +77,8 @@ ul.multiselect-container{
     <div class="col-xs-12 col-sm-6 col-lg-6">
     <?php
 	if(Yii::$app->controller->action->id === 'create' ) {
-    		echo $form->field($model, 'fees_collect_batch_id[]')->dropDownList(ArrayHelper::map(app\modules\course\models\Batches::find()->where(['is_status' => 0])->all(),'batch_id','batch_name','batchCourse.course_name'),['multiple' => "multiple", 'class'=>'form-control', 'placeholder' => $model->getAttributeLabel('fees_collect_batch_id')]);  
-	} else { 
+    		echo $form->field($model, 'fees_collect_batch_id[]')->dropDownList(ArrayHelper::map(app\modules\course\models\Batches::find()->where(['is_status' => 0])->all(),'batch_id','batch_name','batchCourse.course_name'),['multiple' => "multiple", 'class'=>'form-control', 'placeholder' => $model->getAttributeLabel('fees_collect_batch_id')]);
+	} else {
 		echo $form->field($model, 'fees_collect_batch_id')->dropDownList(ArrayHelper::map(app\modules\course\models\Batches::find()->where(['is_status' => 0])->all(),'batch_id','batch_name','batchCourse.course_name'),['class'=>'form-control', 'placeholder' => $model->getAttributeLabel('fees_collect_batch_id')]);
 	}
     ?>
@@ -149,3 +97,56 @@ ul.multiselect-container{
    </div>
   </div>
 </div>
+<script>
+
+$(document).ready(function() {
+        $('#<?= Html::getInputId($model, "fees_collect_batch_id")?>').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+	    enableCaseInsensitiveFiltering: true,
+	    enableClickableOptGroups: true,
+	    buttonText: function(options, select) {
+                if (options.length === 0) {
+                    return 'Select Batch(es)';
+                }
+		else {
+                     var labels = [];
+                     options.each(function() {
+                         if ($(this).attr('label') !== undefined) {
+                             labels.push($(this).attr('label'));
+                         }
+                         else {
+                             labels.push($(this).text());
+                         }
+                     });
+                     return labels.join(', ') + '';
+                }
+	    }
+        });
+    });
+
+</script>
+<style>
+fieldset.scheduler-border {
+    border: 1px groove #ddd !important;
+    padding: 0 15px 15px 15px !important;
+    margin: 0 0 10px 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+}
+
+legend.scheduler-border {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width:auto;
+    padding:0 10px;
+    border-bottom:none;
+}
+ul.multiselect-container{
+    overflow: auto !important;
+    height: 230px !important;
+    left: auto;
+    top: 35px;
+}
+</style>

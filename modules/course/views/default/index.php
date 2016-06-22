@@ -1,5 +1,5 @@
-<?php 
-use yii\helpers\Html; 
+<?php
+use yii\helpers\Html;
 use app\modules\student\models\StuMaster;
 use \app\modules\course\models\Batches;
 $this->title = Yii::t('course', 'Manage Course Modules');
@@ -51,7 +51,7 @@ $this->registerCss(".disp-count{cursor:default;} .disp-count:hover {background-c
 		      </div><!-- /.info-box -->
 		</div>
 
-	</div> <!-- /. End Row-->	
+	</div> <!-- /. End Row-->
 
 </div><!-- /.box-body -->
 </div>
@@ -64,7 +64,7 @@ $this->registerCss(".disp-count{cursor:default;} .disp-count:hover {background-c
 	<?php if(!empty($actCourseData)) : ?>
 	  <div id="accordion" class="box-group">
 
-	<?php foreach($actCourseData as $ck=>$cv) : ?>	
+	<?php foreach($actCourseData as $ck=>$cv) : ?>
 	    <div class="panel box box-default">
 	      <div class="box-header with-border">
 		<h4 class="box-title">
@@ -80,33 +80,33 @@ $this->registerCss(".disp-count{cursor:default;} .disp-count:hover {background-c
 		     <span class="btn btn-sm btn-warning disp-count">
 			<i class="fa fa-sitemap"></i> <?php echo Yii::t('course', 'Batches'); ?> &nbsp;
 			<span class="badge">
-				<?= Batches::find()->where('is_status<>2 AND batch_course_id='.$cv->course_id)->count() ?>
+				<?= Batches::find()->where(['<>', 'is_status', 2])->andWhere(['batch_course_id' => $cv->course_id])->count() ?>
 			</span>
 		    </span>
 
 		    <?= Html::a('<i class="fa fa-eye"></i>', ['courses/view', 'id'=>$cv->course_id], ['class'=>'btn-sm btn btn-default', 'title'=>Yii::t('course', 'View Course Details')]) ?>
 		    <?= Html::a('<i class="fa fa-pencil-square-o"></i>', ['courses/update', 'id'=>$cv->course_id], ['class'=>'btn-sm btn btn-default', 'title'=>Yii::t('course', 'Edit Course Details')]) ?>
-		    <?= Html::a('<i class="fa fa-trash-o"></i>', ['courses/delete', 'id'=>$cv->course_id], ['class'=>'btn-sm btn btn-default', 'title'=>Yii::t('course', 'Delete'), 
+		    <?= Html::a('<i class="fa fa-trash-o"></i>', ['courses/delete', 'id'=>$cv->course_id], ['class'=>'btn-sm btn btn-default', 'title'=>Yii::t('course', 'Delete'),
 			'data' => ['confirm' => Yii::t('course', 'Are you sure you want to delete this item?'),
           			'method' => 'post']
-			]) 
+			])
 		     ?>
                 </div>
 	      </div>
 
 	      <div class="panel-collapse collapse" id="<?= 'collapse'.$ck?>" aria-expanded="true" style="">
 		<div class="box-body">
-		<?php $batchData = Batches::find()->where('is_status!=2 AND batch_course_id = '.$cv->course_id)->asArray()->all(); ?>
+		<?php $batchData = Batches::find()->where(['<>', 'is_status', 2])->andWhere(['batch_course_id' => $cv->course_id])->asArray()->all(); ?>
 		  <ol style=" font-size: 15px; line-height: 35px;">
 		    <?php foreach($batchData as $bk=>$bv) : ?>
 			<li><?= $bv['batch_name'] ?>
 			    <?= Html::a('<i class="fa fa-eye"></i>', ['batches/view', 'id'=>$bv['batch_id']], ['class'=>'btn-xs btn btn-default', 'title'=>Yii::t('course', 'View Batch Details')]) ?>
 			    <?= Html::a('<i class="fa fa-pencil-square-o"></i>', ['batches/update', 'id'=>$bv['batch_id']], ['class'=>'btn-xs btn btn-default', 'title'=>Yii::t('course', 'Edit Batch Details')]) ?>
-			    <?= Html::a('<i class="fa fa-trash-o"></i>', ['batches/delete', 'id'=>$bv['batch_id']], ['class'=>'btn-xs btn btn-default', 'title'=>Yii::t('course', 'Delete'), 
+			    <?= Html::a('<i class="fa fa-trash-o"></i>', ['batches/delete', 'id'=>$bv['batch_id']], ['class'=>'btn-xs btn btn-default', 'title'=>Yii::t('course', 'Delete'),
 				'data' => ['confirm' => Yii::t('course', 'Are you sure you want to delete this item?'),
 				'method' => 'post']
-			     ]) 
-			?>	
+			     ])
+			?>
 				<div class="pull-right hidden-xs">
 					<span class="label label-default">
 						<i class="fa fa-users"></i> <?php echo Yii::t('course', 'Students'); ?>&nbsp;
@@ -120,14 +120,14 @@ $this->registerCss(".disp-count{cursor:default;} .disp-count:hover {background-c
 						<span class="label label-danger"><?php echo Yii::t('course', 'Inactive'); ?></span>
 					<?php endif; ?>
 				</div>
-			<?php $secData = \app\modules\course\models\Section::find()->where('is_status!=2 AND section_batch_id = '.$bv['batch_id'])->asArray()->all(); ?>
+			<?php $secData = \app\modules\course\models\Section::find()->where(['<>', 'is_status', 2])->andWhere(['section_batch_id' => $bv['batch_id']])->asArray()->all(); ?>
 				<ol>
 				<?php foreach($secData as $sk=>$sv) : ?>
 					<li>
 					    <?= $sv['section_name'] ?>
 					    <?= Html::a('<i class="fa fa-eye"></i>', ['section/view', 'id'=>$sv['section_id']], ['class'=>'btn-xs btn btn-default', 'title'=>Yii::t('course', 'View Section Details')]) ?>
 			    		    <?= Html::a('<i class="fa fa-pencil-square-o"></i>', ['section/update', 'id'=>$sv['section_id']], ['class'=>'btn-xs btn btn-default', 'title'=>Yii::t('course', 'Edit Section Details')]) ?>
-			    		    <?= Html::a('<i class="fa fa-trash-o"></i>', ['section/delete', 'id'=>$sv['section_id']], ['class'=>'btn-xs btn btn-default', 'title'=>Yii::t('course', 'Delete'), 'data' => ['confirm' => Yii::t('course', 'Are you sure you want to delete this item?'), 'method' => 'post']]) ?> 
+			    		    <?= Html::a('<i class="fa fa-trash-o"></i>', ['section/delete', 'id'=>$sv['section_id']], ['class'=>'btn-xs btn btn-default', 'title'=>Yii::t('course', 'Delete'), 'data' => ['confirm' => Yii::t('course', 'Are you sure you want to delete this item?'), 'method' => 'post']]) ?>
 					    <div class="pull-right hidden-xs">
 						<span class="label label-default">
 							<i class="fa fa-users"></i> <?php echo Yii::t('course', 'Students'); ?>&nbsp;
@@ -142,9 +142,9 @@ $this->registerCss(".disp-count{cursor:default;} .disp-count:hover {background-c
 						<?php endif; ?>
 					    </div>
 					</li>
-				<?php endforeach; ?> 
+				<?php endforeach; ?>
 				</ol>
-			 
+
 			</li>
 		    <?php endforeach; ?>
 		  </ol>

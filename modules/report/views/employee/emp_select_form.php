@@ -2,7 +2,7 @@
 $(document).ready(function () {
 
    $('.checkall').click(function () {
-        $(this).parents('fieldset:eq(0)').find(':checkbox').attr('checked', this.checked);	
+        $(this).parents('fieldset:eq(0)').find(':checkbox').attr('checked', this.checked);
 	if(this.checked)
 	   $(this).parents("fieldset:eq(0)").find(".checkbox").prop("checked",true);
 	else
@@ -25,8 +25,6 @@ $('.btn.generate').click(function (e) {
 	<input type="checkbox" class="checkall" id="check_all_id"> <label for="check_all_id"> <?php echo Yii::t('report', 'Check All'); ?> </label>
 </div>
 
-<input  type="hidden" name="query" value="<?php echo $query;?>" />
-
 <div class="checkbox">
  <div class="col-xs-12 col-lg-12 col-sm-12">
 	<div class = "col-sm-3 col-lg-3 col-xs-12" style="padding:3px;">
@@ -46,12 +44,12 @@ $('.btn.generate').click(function (e) {
 	   <label class="checkbox-inline">
 		<input type="checkbox" class="checkbox" name="e_info[]" id="emp_last_name" value="emp_last_name" /> &nbsp;<?php echo Yii::t('report', 'Last Name'); ?> </label>
 	</div>
-	
+
  </div>
 </div>
 
 <div class="checkbox">
-  <div class="col-xs-12 col-lg-12 col-sm-12">	
+  <div class="col-xs-12 col-lg-12 col-sm-12">
 	<div class = "col-sm-3 col-lg-3 col-xs-12" style="padding:3px;">
 	  <label class="checkbox-inline">
 		<input type="checkbox" class="checkbox" name="e_info[]" id="emp_mother_name" value="emp_mother_name" /> &nbsp;<?php echo Yii::t('report', 'Mother Name'); ?> </label>
@@ -108,7 +106,7 @@ $('.btn.generate').click(function (e) {
 	</div>
 	<div class = "col-sm-3 col-lg-3 col-xs-12" style="padding:3px;">
 	  <label class="checkbox-inline">
-		<input type="checkbox" class="checkbox" name="e_info[]" id="emp_dob", value="emp_dob" />&nbsp;<?php echo Yii::t('report', 'Birth Date'); ?></label>	
+		<input type="checkbox" class="checkbox" name="e_info[]" id="emp_dob", value="emp_dob" />&nbsp;<?php echo Yii::t('report', 'Birth Date'); ?></label>
 	</div>
   </div>
 </div>

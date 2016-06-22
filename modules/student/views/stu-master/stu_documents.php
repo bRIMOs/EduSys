@@ -1,4 +1,3 @@
-<!doctype html>
 <?php
 
 use yii\helpers\Html;
@@ -25,14 +24,14 @@ else
 <div class="col-xs-12 col-lg-12 no-padding" style="<?= $st; ?>">
   <div class="row">
 	  <div class="col-xs-12">
-	    <h4 class="edusec-border-bottom-warning page-header edusec-profile-title-1">	
+	    <h4 class="edusec-border-bottom-warning page-header edusec-profile-title-1">
 		<i class="fa fa-upload"></i> <?= Html::encode(Yii::t('stu', 'Upload Remaining Documents')) ?>
 	     </h4>
 	  </div><!-- /.col -->
   </div>
 
   <div class="<?php echo $model->isNewRecord ? 'box-success' : 'box-default'; ?> box view-item col-xs-12 col-lg-12">
-    <div class="stu-docs-form">       
+    <div class="stu-docs-form">
 	<?php  $form = ActiveForm::begin([
 		'id' => 'stu-docs-form',
 		'action' => ['adddocs'],
@@ -40,18 +39,18 @@ else
 		'fieldConfig' => [
 		    'template' => "{label}{input}{error}",
 		],
-	]); 
+	]);
 		$query= new \yii\db\Query();
-		$query -> select('stu_docs_category_id')
-		       -> from('stu_docs sd')
-		       -> join('join',
+		$query ->select('stu_docs_category_id')
+		       ->from('stu_docs sd')
+		       ->join('join',
 			'document_category dc', 'dc.doc_category_id = sd.stu_docs_category_id')
-			->where('sd.stu_docs_stu_master_id = '.$model->stu_master_id);
+			->where(['sd.stu_docs_stu_master_id' => $model->stu_master_id]);
 		$command=$query->createCommand();
 		$doc_id=$command->queryColumn();
-		
+
 	?>
-	<?php foreach($docs as $dc=>$v) : 
+	<?php foreach($docs as $dc=>$v) :
 
 		if(in_array($v['doc_category_id'], $doc_id)) {
 			continue;
@@ -63,7 +62,7 @@ else
 		    <div class="col-xs-12 col-sm-4 col-lg-4">
 			<?= $form->field($stu_docs, 'stu_docs_category_id_temp['.$v['doc_category_id'].']')->textInput(['maxlength' => 100, 'value' => $v['doc_category_name'], 'readOnly' => true,]) ?>
 			<?= $form->field($stu_docs, 'stu_docs_category_id['.$v['doc_category_id'].']', ['template' => "{input}"])->hiddenInput(['value' => $v['doc_category_id'],]); ?>
-		    </div>			
+		    </div>
 
 		    <div class="col-xs-12 col-sm-4 col-lg-4">
 			<?= $form->field($stu_docs, 'stu_docs_details['.$v['doc_category_id'].']')->textInput(['maxlength' => 100,]) ?>
@@ -79,7 +78,7 @@ else
 		</div>
 	<?php
 		}
-	     endforeach; 
+	     endforeach;
 	?>
     <div class="form-group col-xs-12 col-sm-3 edusecArLangCss" style="<?= $st; ?>;margin-top: 10px;">
 		<?= Html::submitButton('<i class="fa fa-upload"></i>'. Yii::t('stu', 'Upload'), ['class' => $stu_docs->isNewRecord ? 'btn btn-success btn-block' : 'btn btn-primary btn-block']) ?>

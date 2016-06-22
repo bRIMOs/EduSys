@@ -14,16 +14,16 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses. 
+ * along with this program.  If not, see http://www.gnu.org/licenses.
 
- * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics, 
+ * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics,
  * Opp. Thakkarnagar BRTS station, Ahmedbad - 382350, India or
  * at email address info@rudrasoftech.com.
- * 
+ *
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- 
+
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * RUDRA SOFTECH" logo. If the display of the logo is not reasonably feasible for
@@ -45,30 +45,30 @@ use app\models\Nationality;
 
 class ExportDataController extends Controller
 {
-	public function actionEmployeeProfilePdf($eid) 
+	public function actionEmployeeProfilePdf($eid)
 	{
 		$nationality = $empAdd = [];
 
 		$empMaster = EmpMaster::findOne($eid);
 		$empDocs = EmpDocs::find()->where(['emp_docs_emp_master_id'=>$eid])->join('join','document_category dc', 'dc.doc_category_id = emp_docs_category_id AND dc.is_status <> 2')->all();
 		$empInfo = EmpInfo::find()->where(['emp_info_emp_master_id'=>$eid])->one();
-		
+
 		if($empMaster->emp_master_nationality_id !== null)
 			$nationality = Nationality::findOne($empMaster->emp_master_nationality_id)->nationality_name;
 
 		if($empMaster->emp_master_emp_address_id !== null)
 			$empAdd = EmpAddress::findOne($empMaster->emp_master_emp_address_id);
-		 
+
 		$html = $this->renderPartial('/emp-master/empprofilepdf',
 			[
 				'empDocs'=>$empDocs,
 				'empMaster'=>$empMaster,
-				'empInfo'=>$empInfo,	
+				'empInfo'=>$empInfo,
 				'nationality'=>$nationality,
 				'empAdd'=>$empAdd,
 			]);
 		$fName = $empInfo->emp_first_name."_".$empInfo->emp_last_name."_".date('Ymd_His');
 		return Yii::$app->pdf->exportData(Yii::t('emp','Employee Profile'),$fName,$html);
 	}
-	
+
 }

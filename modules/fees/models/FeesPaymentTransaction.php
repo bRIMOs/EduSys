@@ -14,16 +14,16 @@
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses. 
+ * along with this program.  If not, see http://www.gnu.org/licenses.
 
- * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics, 
+ * You can contact RUDRA SOFTECH, 1st floor Geeta Ceramics,
  * Opp. Thakkarnagar BRTS station, Ahmedbad - 382350, India or
  * at email address info@rudrasoftech.com.
- * 
+ *
  * The interactive user interfaces in modified source and object code versions
  * of this program must display Appropriate Legal Notices, as required under
  * Section 5 of the GNU Affero General Public License version 3.
- 
+
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * RUDRA SOFTECH" logo. If the display of the logo is not reasonably feasible for
@@ -119,25 +119,36 @@ class FeesPaymentTransaction extends \yii\db\ActiveRecord
             'is_status' => Yii::t('fees', 'Status'),
         ];
     }
-   
+
     public function checkFeesTotal($attribute)
     {
 	if(empty($this->fees_pay_tran_amount)) {
-		return $this->addError($attribute, "You can not take zero fees.");	
+		return $this->addError($attribute, "You can not take zero fees.");
 	}
 	$payFees=$chkFees=0;
-	$payFees = Yii::$app->db->createCommand("SELECT SUM(fees_pay_tran_amount) FROM fees_payment_transaction WHERE fees_pay_tran_stu_id=".$this->fees_pay_tran_stu_id." AND fees_pay_tran_collect_id=".$this->fees_pay_tran_collect_id." AND is_status=0")->queryScalar();
+	$payFees = Yii::$app->db->createCommand("SELECT SUM(fees_pay_tran_amount) FROM fees_payment_transaction WHERE fees_pay_tran_stu_id=:fpt_stu_id AND fees_pay_tran_collect_id=:fpt_collect_id AND is_status=:status")
+        ->bindValues([
+            ':fpt_stu_id' => $this->fees_pay_tran_stu_id,
+            ':fpt_collect_id' => $this->fees_pay_tran_collect_id,
+            ':status' => 0,
+        ])
+        ->queryScalar();
 
-	$totalPayFees = Yii::$app->db->createCommand("SELECT SUM(fees_details_amount) FROM fees_category_details WHERE fees_details_category_id = ".$this->fees_pay_tran_collect_id." AND is_status=0")->queryScalar();
+	$totalPayFees = Yii::$app->db->createCommand("SELECT SUM(fees_details_amount) FROM fees_category_details WHERE fees_details_category_id=:fpt_collect_id AND is_status=:status")
+        ->bindValues([
+            ':fpt_collect_id' => $this->fees_pay_tran_collect_id,
+            ':status' => 0,
+        ])
+        ->queryScalar();
 
 	if($this->isNewRecord) {
-		$chkFees = $payFees+$this->fees_pay_tran_amount; 
+		$chkFees = $payFees+$this->fees_pay_tran_amount;
 	} else {
 		$currFees = FeesPaymentTransaction::findOne($this->fees_pay_tran_id)->fees_pay_tran_amount;
-		$chkFees = ($payFees+$this->fees_pay_tran_amount)-$currFees; 
+		$chkFees = ($payFees+$this->fees_pay_tran_amount)-$currFees;
 	}
 	if($chkFees>$totalPayFees) {
-		return $this->addError($attribute, "You can not take advance fees.");		
+		return $this->addError($attribute, "You can not take advance fees.");
 		return false;
 	} else {
 		return true;
@@ -146,9 +157,15 @@ class FeesPaymentTransaction extends \yii\db\ActiveRecord
 
     public static function getStuTotalPayFees($sid, $cid)
     {
-	$payFeesTmp = Yii::$app->db->createCommand("SELECT SUM(fees_pay_tran_amount) FROM fees_payment_transaction WHERE fees_pay_tran_stu_id=".$sid." AND fees_pay_tran_collect_id=".$cid." AND is_status=0")->queryScalar();
-	$payFees = !empty($payFeesTmp) ? $payFeesTmp : 0; 
-	return $payFees;
+        $payFeesTmp = Yii::$app->db->createCommand("SELECT SUM(fees_pay_tran_amount) FROM fees_payment_transaction WHERE fees_pay_tran_stu_id=:sid AND fees_pay_tran_collect_id=:cid AND is_status=:status")
+            ->bindValues([
+                ':sid' => $sid,
+                ':cid' => $cid,
+                ':status' => 0,
+            ])
+            ->queryScalar();
+        $payFees = !empty($payFeesTmp) ? $payFeesTmp : 0;
+        return $payFees;
     }
 
 
@@ -169,9 +186,9 @@ class FeesPaymentTransaction extends \yii\db\ActiveRecord
 		    ->sum('fpt.fees_pay_tran_amount');
 
 	return ['paidFees'=>$paidTotal, 'unPaidFees'=>$collectTotal-$paidTotal];
-	
+
     }
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -179,7 +196,7 @@ class FeesPaymentTransaction extends \yii\db\ActiveRecord
     {
         return $this->hasOne(FeesCollectCategory::className(), ['fees_collect_category_id' => 'fees_pay_tran_collect_id']);
     }
-   
+
     public function getRelStuData()
     {
         return $this->hasOne(\app\modules\student\models\StuMaster::className(), ['stu_master_id' => 'fees_pay_tran_stu_id']);

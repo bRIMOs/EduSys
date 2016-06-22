@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => $this->title, 'url'=>['collect']];
 
 ?>
 
-<!---Start Select Fees Collection Category---> 
+<!---Start Select Fees Collection Category--->
 <div class="box-info box box-solid view-item col-xs-12 col-lg-12 no-padding">
     <div class="box-header with-border">
 	<h3 class="box-title"><i class="fa fa-search"></i> <?php echo Yii::t('fees', 'Select Criteria'); ?></h3>
@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = ['label' => $this->title, 'url'=>['collect']];
 	]); ?>
 
     	<div class="col-md-6">
-		<?= $form->field($FccModel, 'fees_collect_batch_id')->dropDownList(ArrayHelper::map(app\modules\course\models\Batches::find()->where(['is_status'=>0])->all(), 'batch_id','batch_name', 'batchCourse.course_name'), 
+		<?= $form->field($FccModel, 'fees_collect_batch_id')->dropDownList(ArrayHelper::map(app\modules\course\models\Batches::find()->where(['is_status'=>0])->all(), 'batch_id','batch_name', 'batchCourse.course_name'),
 		[
 			'prompt'=>Yii::t('fees', 'Select Batch'),
 			'onchange'=>'
@@ -33,11 +33,11 @@ $this->params['breadcrumbs'][] = ['label' => $this->title, 'url'=>['collect']];
 				.done(function( data ) {
 				$( "#'.Html::getInputId($FccModel, 'fees_collect_category_id').'" ).html( data );
 				}
-			);'    
-		]); 
+			);'
+		]);
 		$fccData = [];
 		if(!empty($FccModel->fees_collect_batch_id)) {
-			$fccData = ArrayHelper::map(app\modules\fees\models\FeesCollectCategory::find()->where(['is_status'=>0, 'fees_collect_batch_id'=>$FccModel->fees_collect_batch_id])->all(), 'fees_collect_category_id', 'fees_collect_name');	
+			$fccData = ArrayHelper::map(app\modules\fees\models\FeesCollectCategory::find()->where(['is_status'=>0, 'fees_collect_batch_id'=>$FccModel->fees_collect_batch_id])->all(), 'fees_collect_category_id', 'fees_collect_name');
 		}
 	?>
 	</div>
@@ -53,28 +53,41 @@ $this->params['breadcrumbs'][] = ['label' => $this->title, 'url'=>['collect']];
 	<?php ActiveForm::end(); ?>
     </div>
 </div>
-<!---End Select Fees Collection Category---> 
+<!---End Select Fees Collection Category--->
 
-<?php 
+<?php
 if($dispStatus) :
 	$totalAmount = $gTotalAmount = $gpayFees = $gActualCollect = $payFees = $actualCollect = 0;
 	$feesDetails = \app\modules\fees\models\FeesCategoryDetails::find()->where(['fees_details_category_id' => $FccModel->fees_collect_category_id, 'is_status'=>0])->asArray()->all();
-	$stuDataTmp = Yii::$app->db->createCommand("SELECT stu_master_id FROM stu_master WHERE stu_master_batch_id=".$FccModel->fees_collect_batch_id." AND is_status=0")->queryColumn();
-	$payFeesTmp = Yii::$app->db->createCommand("SELECT fees_pay_tran_stu_id FROM fees_payment_transaction WHERE fees_pay_tran_batch_id=".$FccModel->fees_collect_batch_id." AND is_status=0 AND fees_pay_tran_collect_id=".$FccModel->fees_collect_category_id)->queryColumn();
+
+	$stuDataTmp = Yii::$app->db->createCommand("SELECT stu_master_id FROM stu_master WHERE stu_master_batch_id=:fcbId AND is_status=:status")
+        ->bindValues([
+                ':fcbId' => $FccModel->fees_collect_batch_id,
+                ':status' => 0,
+            ])
+        ->queryColumn();
+
+	$payFeesTmp = Yii::$app->db->createCommand("SELECT fees_pay_tran_stu_id FROM fees_payment_transaction WHERE fees_pay_tran_batch_id=:fcbId AND is_status=:status AND fees_pay_tran_collect_id=:fccId")
+        ->bindValues([
+                ':fcbId' => $FccModel->fees_collect_batch_id,
+                ':status' => 0,
+                ':fccId' => $FccModel->fees_collect_category_id,
+            ])
+        ->queryColumn();
 	$stuData = array_unique(array_merge($stuDataTmp, $payFeesTmp));
 
 	$feesData = \app\modules\fees\models\FeesPaymentTransaction::find()->where(['fees_pay_tran_batch_id' => $FccModel->fees_collect_batch_id, 'is_status'=>0])->asArray()->all();
-	
+
 ?>
 
-<!---Start display fees collection details---> 
+<!---Start display fees collection details--->
 <div class="box-primary box view-item col-xs-12 col-lg-12 no-padding">
    <div class="box-header with-border">
 		<h3 class="box-title"><i class="fa fa-inr"></i> <?php echo Yii::t('fees', 'Fees Collection Details'); ?></h3>
    </div>
    <div class="box-body table-responsive no-padding">
    <?php
-   	if(!empty($feesDetails)) {  
+   	if(!empty($feesDetails)) {
 		echo '<table class="table">';
 		echo '<col class="col-xs-1">';
 		echo '<tr>';
@@ -85,7 +98,7 @@ if($dispStatus) :
 		echo '</tr>';
 		foreach($feesDetails as $key=>$value) {
 			echo '<tr>';
-			echo '<td class="text-center">'.($key+1).'</td>';	
+			echo '<td class="text-center">'.($key+1).'</td>';
 			echo '<td>'.$value['fees_details_name'].'</td>';
 			echo '<td>'.$value['fees_details_description'].'</td>';
 			echo '<td>'.$value['fees_details_amount'].'</td>';
@@ -101,7 +114,7 @@ if($dispStatus) :
    </div><!---./end box-body--->
 </div><!---./end box--->
 
-<!---Start display student list block---> 	
+<!---Start display student list block--->
 <div class="box-success box view-item col-xs-12 col-lg-12 no-padding">
    <div class="box-header with-border">
 	<h3 class="box-title"><i class="fa fa-users"></i> <?php echo Yii::t('fees', 'Student Details'); ?></h3>
@@ -125,7 +138,7 @@ if($dispStatus) :
 		$sr = 1;
 		foreach($stuData as $key=>$value) {
 			$stuDetails = \app\modules\student\models\StuMaster::findOne($value);
-			echo '<tr>';		
+			echo '<tr>';
 			echo '<td class="text-center">'.$sr++.'</td>';
 			echo '<td>'.(!empty($stuDetails->stuMasterStuInfo->stu_unique_id) ? $stuDetails->stuMasterStuInfo->stu_unique_id : Yii::t("fees", "(Not Set)")).'</td>';
 			echo '<td>'.$stuDetails->stuMasterStuInfo->name.'</td>';
@@ -144,7 +157,7 @@ if($dispStatus) :
 		echo '<th>'.$gpayFees.'</th>';
 		echo '<th>'.$gActualCollect.'</th>';
 		echo '<th></th></tr>';
-		echo '</table>';	
+		echo '</table>';
 	}
 	else {
 		echo '<div class="alert alert alert-danger" style="margin: 10px;">'.Yii::t('fees', 'No student data available').'</div>';
