@@ -106,6 +106,9 @@ http://localhost/edusec/edusec-requirements.php
 
 Release Notes
 -------------
+> #### EduSec 4.2.6
+>	- Point release 4.2.6 : 22/06/2016.
+>	- EduSec 4.2.6 is released with security bug-fix for the vulnerability.
 
 > #### EduSec 4.2.5
 >	- Point release 4.2.5 : 26/11/2015.
