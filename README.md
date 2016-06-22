@@ -91,11 +91,11 @@ DEMO/SAMPLE DATABASE USERS DETAILS
 ---------------------------------- 
 
 - ADMIN USER
-	- **Username** : admin **Password** : admin
+	- **Username** : admin@edusec.org **Password** : admin@edusec.org
 - EMPLOYEE USER
-	- **Username** : employee **Password** : employee
+	- **Username** : employee@edusec.org **Password** : employee@edusec.org
 - STUDENT USER
-	- **Username** : student **Password** : student
+	- **Username** : student@edusec.org **Password** : student@edusec.org
 
 **NOTE**
 ---------- 
