@@ -87,7 +87,7 @@ which need to go following step to done:
 7. You are now ready to use EduSec.
 
 
-DEMO/SAMPLE DATABASE USERS DETAILS :
+DEMO/SAMPLE DATABASE USERS DETAILS
 ---------------------------------- 
 
 - ADMIN USER
